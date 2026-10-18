@@ -46,9 +46,21 @@ function getPool() {
   return pool;
 }
 
+function reachError(error) {
+  const message = String(error && error.message || '');
+  if (/ENOTFOUND|ENETUNREACH/i.test(message) && /supabase\.co/i.test(message)) {
+    return fail(500, 'Vercel cannot reach db.<project>.supabase.co because that host is IPv6-only. In Supabase, open Connect, copy the pooler URI, put it in DATABASE_URL, and redeploy.');
+  }
+  return error;
+}
+
 async function query(text, params) {
-  await ensureSchema();
-  return getPool().query(text, params);
+  try {
+    await ensureSchema();
+    return await getPool().query(text, params);
+  } catch (error) {
+    throw reachError(error);
+  }
 }
 
 async function ensureSchema() {

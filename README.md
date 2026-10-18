@@ -26,7 +26,7 @@ Import this repository. Leave the framework as **Other** and the build command e
 
 In the Vercel project settings, add the same variables as `.env`:
 
-- `DATABASE_URL`
+- `DATABASE_URL` — use the pooler URI from Supabase **Connect**, not `db.<project>.supabase.co`. That direct host is IPv6-only, and Vercel cannot resolve it. The pooler user is `postgres.<project-ref>`. Copy the host from the dashboard, then redeploy.
 - `SESSION_SECRET`
 - `EMAIL_ADDRESS`, `EMAIL_ALIAS`, and `EMAIL_APP_PASSWORD`
 - `SMTP_HOST` and `SMTP_PORT` when the mailbox is not Gmail
