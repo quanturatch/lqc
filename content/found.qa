@@ -1,0 +1,214 @@
+# found | Foundations: the maths & physics toolkit | 🧮
+> Before qubits, you need a small toolkit: complex numbers, vectors, matrices and a few ideas from quantum physics. Don't worry, each piece is simple on its own.
+" What I cannot create, I do not understand. | Richard Feynman, written on his blackboard at Caltech (1988)
+## Start here: you only need four ideas
+Good news: you do not need all of this maths on day one. If you are new, read this topic, then jump to the **Qubits** chapter and come back here when a word confuses you.
+**1. Numbers with two parts.** A **complex number** is a normal number plus an "imaginary" part, like 3 + 4i. Quantum states use them because they can describe both size and direction (called **phase**).
+**2. Lists of numbers.** A **vector** is just a list of numbers. A qubit's state is a list of two complex numbers.
+**3. Tables that change lists.** A **matrix** is a table of numbers. Multiplying a vector by a matrix gives a new vector. A quantum **gate** is a matrix.
+**4. Chances from sizes.** Square the size of a number in the list and you get a **probability**: the chance of seeing that result.
+~ Think of a recipe: the vector is the list of ingredients, the matrix is the cooking step, and the probability is what ends up on your plate.
+## Light comes in packets: Planck, Einstein, Bohr and the photoelectric effect
+In **1900** Max Planck explained the glow of hot objects by assuming energy comes in small packets, called **quanta**.
+In **1905** Albert Einstein used this idea to explain the **photoelectric effect**: light shining on metal knocks out electrons, but only if each light packet (a **photon**) has enough energy. Brighter dim-red light does not help; bluer light does. He won the 1921 Nobel Prize for this.
+In **1913** Niels Bohr suggested electrons in atoms can only have certain energy levels, like steps on a ladder. Jumping between steps gives out or takes in a photon.
+~ Like buying with coins only: you can pay 1, 2 or 3 coins, but never 1.5. Energy in atoms works in "coins" too.
+## Wave-particle duality
+Light and matter behave like **waves** in some experiments and like **particles** in others. In the double-slit experiment, single electrons land as dots (particle-like) but build up stripes (wave-like).
+This is called **wave-particle duality**. Quantum mechanics describes both with one tool: the wavefunction (a list of amplitudes).
+x It does not mean an electron is sometimes a tiny ball and sometimes a wave. It is a quantum object that fits neither everyday picture exactly.
+## Spin and the Stern–Gerlach experiment
+In **1922** Otto Stern and Walther Gerlach sent silver atoms through an uneven magnet. Instead of a smear, the beam split into just **two** spots. This showed a hidden property, now called **spin**, has only two outcomes when measured along an axis: "up" or "down".
+That makes spin a natural qubit. Measure along Z, then X, then Z again: the last result is random again! Measuring X erased the Z information. Try it below.
+H <div class="sg6" id="sg6"><div class="btnrow"><label>Magnet 1 <select class="a1"><option>Z</option><option>X</option></select></label><label>Magnet 2 <select class="a2"><option>X</option><option>Z</option></select></label><label>Magnet 3 <select class="a3"><option>Z</option><option>X</option></select></label></div><p class="small6">Each magnet keeps only the atoms that come out "up". Then the next magnet measures again.</p><div class="btnrow"><button type="button" class="go pri2">Send 1000 atoms</button></div><div class="out6" aria-live="polite"></div></div>
+## Tunnelling
+A quantum particle can sometimes pass through a barrier it does not have enough energy to climb. This is **quantum tunnelling**. The chance falls quickly as the barrier gets thicker or higher.
+Tunnelling powers real things: flash memory, the scanning tunnelling microscope, and the **Josephson junction** inside superconducting qubits. The 2025 Nobel Prize in Physics was for showing tunnelling in a whole electric circuit.
+~ Like a ball that sometimes appears on the other side of a hill without rolling over it.
+## The harmonic oscillator: evenly spaced energy steps
+A **harmonic oscillator** is anything that swings back and forth around a resting point, like a mass on a spring or a vibrating molecule. In quantum physics its energy can only take evenly spaced values: (n + ½) times ħω, where n = 0, 1, 2…
+Even the lowest level has some energy (the "zero-point energy"). Superconducting qubits are oscillators made uneven on purpose, so the first two levels can be used as 0 and 1 without spilling into level 2.
+## Bosons, fermions and the Pauli exclusion principle
+Particles come in two families. **Fermions** (like electrons) obey the **Pauli exclusion principle**: no two can be in exactly the same state. This is why atoms have shells and why matter is solid.
+**Bosons** (like photons) can share a state, even pile into it. Lasers and superconductors rely on this.
+## The rules of the game: postulates of quantum mechanics
+Quantum mechanics rests on a few basic rules, called **postulates**. In plain words:
+**1. States:** a system is described by a list of amplitudes (a vector in a **Hilbert space**). **2. Change:** when no one looks, the state changes smoothly and reversibly (by a unitary step, set by the Schrödinger equation). **3. Measurement:** looking gives one result at random, with chance = amplitude size squared, and the state jumps to match the result. **4. Combining:** several systems together are described by the tensor product of their states.
+Everything in this guide follows from these four rules.
+## The Schrödinger equation, simply
+The **Schrödinger equation** (1926) says how a quantum state changes over time. Its main ingredient is the **Hamiltonian**: the system's energy rules.
+Simple version: states with a definite energy just spin their phase like a clock hand, faster for higher energy. Any other state is a mix of these, and the mix of spinning phases makes it change shape over time.
+In quantum computing, every gate is a short piece of this time change, carefully designed by shaping microwave or laser pulses.
+## The measurement problem and interpretations
+The rules say a state changes smoothly, yet measurement gives one sudden random result. **Why** and **when** that happens is the **measurement problem**, still debated.
+Main views: **Copenhagen** (the wavefunction is a tool for predictions; don't ask what happens between looks), **Many-worlds** (every result happens, in branching worlds), **Pilot-wave / Bohmian** (particles have real positions guided by a wave), **Collapse models** (collapse is a real, tiny physical process).
+All of them predict the same results for today's experiments, so quantum computers work the same whichever you prefer.
+
+## Hilbert space in plain words
+A **Hilbert space** is the "space of all possible states" of a quantum system. For one qubit it is all pairs of complex numbers (α, β) with total probability 1.
+It adds two things to a simple list of numbers: a way to measure angles and overlaps (the inner product) and enough room for every state. For n qubits it has 2ⁿ directions, which is why it grows so fast.
+## Spectral decomposition
+Any measurable quantity (an "observable") can be split into its possible results and matching states. This is the **spectral decomposition**: A = sum of (result × projector onto that state).
+Example: Z = (+1)·|0⟩⟨0| + (−1)·|1⟩⟨1|. So measuring Z gives +1 for |0⟩ and −1 for |1⟩.
+It is how we turn a matrix into "what can I see, and when?".
+## Commutators and uncertainty
+Two measurements **commute** if doing them in either order gives the same result. The **commutator** [A, B] = AB − BA is zero when they commute.
+If it is not zero (like position and momentum, or X and Z for a qubit), you cannot know both values exactly at once. This is the root of Heisenberg's **uncertainty principle**.
+## The partial trace: looking at part of a system
+If two qubits are entangled, what is the state of just one of them? The **partial trace** answers this: you "average away" the other qubit.
+For a Bell pair, each qubit on its own is completely random: a 50/50 mix with no phase. All the information sits in the correlations between them, not in either qubit alone. This "reduced state" is written as a **density matrix**.
+## Complex numbers
+A complex number looks like $z = a + bi$ where $i^2=-1$. You can draw it as a point on a 2D plane: $a$ goes right, $b$ goes up. Its size is $|z|=\sqrt{a^2+b^2}$ and its angle is called the phase. Quantum amplitudes are complex numbers, so this is the language of the whole subject.
+$$z = a+bi = r e^{i\varphi} = r(\cos\varphi + i\sin\varphi)$$
+~ Think of a clock hand. It has a length and it points in a direction. A complex number is the same: a size plus an angle.
+x "imaginary" means fake. No. Imaginary numbers are just a second direction, and they are as real and useful as normal numbers.
+Two rules matter most. To add complex numbers, add the real parts and the imaginary parts separately. To multiply them, multiply the sizes and add the angles. That second rule is why phases in quantum computing simply "add up" when you apply phase gates one after another.
+$$|z|^2 = z\,z^* = a^2+b^2,\qquad e^{i\alpha}e^{i\beta}=e^{i(\alpha+\beta)}$$
+## Vectors and matrices
+A vector is a list of numbers, like $\begin{pmatrix}a\\b\end{pmatrix}$. A matrix is a grid of numbers that transforms one vector into another. In quantum computing, a qubit state is a vector and a gate is a matrix that acts on it.
+~ A vector is like a shopping list of numbers. A matrix is like a recipe that turns one list into a new list.
+x matrices are only for maths class. In quantum computing, every gate you run is a matrix.
+To multiply a matrix by a vector, take each row of the matrix, multiply it entry by entry with the vector, and add up. The result is one entry of the new vector. Doing two gates in a row means multiplying their matrices, and the order matters: $AB$ is usually not the same as $BA$.
+$$\begin{pmatrix}a&b\\c&d\end{pmatrix}\begin{pmatrix}x\\y\end{pmatrix}=\begin{pmatrix}ax+by\\cx+dy\end{pmatrix}$$
+## Inner products
+In plain words: the inner product tells you how alike two states are. 1 means the same, 0 means completely different. The inner product $\langle u|v\rangle$ measures how much two vectors "overlap". You multiply the complex conjugate of each entry of $u$ with the matching entry of $v$ and add up. If the result is 0, the vectors are orthogonal (completely distinguishable). The length of a vector is $\sqrt{\langle v|v\rangle}$.
+$$\langle u|v\rangle = \sum_k u_k^* v_k$$
+~ Two torches pointing the same way overlap fully. Pointing at right angles, they don't overlap at all. The inner product measures that overlap.
+x you just multiply entries. With complex numbers you must flip the sign of the imaginary part (conjugate) of the first vector first.
+The squared size of the inner product, $|\langle u|v\rangle|^2$, is a probability. If you prepare state $|v\rangle$ and test "is it $|u\rangle$?", that number is the chance of answer "yes". So the inner product is the bridge between maths and what you actually measure.
+$$P(u \text{ given } v) = |\langle u|v\rangle|^2$$
+## Eigenvalues and eigenvectors
+In plain words: some arrows only get longer or shorter when a matrix acts on them, never turned. Those are eigenvectors. An eigenvector of a matrix $A$ is a special vector that only gets stretched, not turned: $A|v\rangle=\lambda|v\rangle$. The stretch factor $\lambda$ is the eigenvalue. In quantum physics, the possible results of a measurement are the eigenvalues of the matching matrix.
+~ Spin a globe. The two poles stay on the axis; they don't move sideways. Those poles are like eigenvectors of the spin.
+x every vector is an eigenvector. Most vectors get turned to a new direction. Only special ones keep their direction.
+To find eigenvalues of a 2×2 matrix, solve $\det(A-\lambda I)=0$. For example, the Pauli $Z$ matrix has eigenvalues $+1$ and $-1$, with eigenvectors $|0\rangle$ and $|1\rangle$. That is why measuring "in the Z basis" gives results labelled 0 and 1.
+$$A|v\rangle=\lambda|v\rangle,\qquad \det(A-\lambda I)=0$$
+## Unitary and Hermitian matrices
+In plain words: a unitary gate is a step that never loses information and can always be reversed. A unitary matrix $U$ satisfies $U^\dagger U = I$, so it keeps lengths the same and can always be undone. Every quantum gate is unitary. A Hermitian matrix satisfies $H^\dagger=H$; its eigenvalues are real, so Hermitian matrices describe things you can measure, like energy. ($\dagger$ means "transpose and complex-conjugate".)
+~ Unitary is like turning a Rubik's cube: nothing is lost, and you can always turn it back. Hermitian is like a ruler: it gives real readings.
+x unitary and Hermitian are the same. Some matrices (like X, Z, H) are both, but in general they are different ideas: one is an action, the other is a measurement.
+A unitary matrix keeps the total probability equal to 1, because it keeps the length of the state vector the same. Its inverse is easy: just take the dagger, $U^{-1}=U^\dagger$. That is how you "undo" a gate. Some gates, like X, Y, Z and H, are both unitary and Hermitian, so they undo themselves.
+$$U^\dagger U = I,\qquad H^\dagger = H,\qquad (AB)^\dagger = B^\dagger A^\dagger$$
+## Tensor products
+The tensor product $\otimes$ is how you combine systems. Two qubits with 2 amplitudes each become one system with $2\times2=4$ amplitudes. $n$ qubits need $2^n$ amplitudes, which is why quantum states get huge so fast.
+$$\begin{pmatrix}a\\b\end{pmatrix}\otimes\begin{pmatrix}c\\d\end{pmatrix}=\begin{pmatrix}ac\\ad\\bc\\bd\end{pmatrix}$$
+~ One coin has 2 outcomes. Two coins have 2×2 = 4 combined outcomes. Tensor products build that combined list.
+x 2 qubits need just 2 numbers each, so 4 numbers total by adding. No: the count multiplies (2ⁿ), it doesn't add. 50 qubits need about a million billion amplitudes.
+The size grows fast: one qubit has 2 amplitudes, two qubits have 4, and $n$ qubits have $2^n$. Not every 2-qubit state can be written as a tensor product of two 1-qubit states. The ones that can't are called entangled.
+## Probability basics
+Probabilities are numbers between 0 and 1 that add up to 1. In quantum computing you never read amplitudes directly; you get random outcomes whose probabilities come from the amplitudes. Running a circuit many times ("shots") lets you estimate those probabilities.
+~ Rolling a die many times shows that each face comes up about 1/6 of the time. Running a circuit many times shows its probabilities the same way.
+x one run of a quantum circuit tells you the answer. Often you need many runs (shots) to see the pattern.
+In quantum computing you run a circuit many times (each run is a "shot") and count results. With more shots, the counted fractions get closer to the true probabilities. The error shrinks roughly like $1/\sqrt{N}$, so 100× more shots gives about 10× better accuracy.
+$$\sum_k p_k = 1,\qquad \text{error} \approx \frac{1}{\sqrt{N_{\text{shots}}}}$$
+## Classical bits and logic gates
+A classical bit is 0 or 1. Gates like NOT, AND, OR and XOR combine bits. Any classical computation can be built from these simple gates, and quantum circuits follow the same "build big things from small gates" idea.
+~ A bit is a light switch: on or off. Logic gates are wiring rules, like "the lamp is on only if both switches are on" (AND).
+x quantum computers throw away classical ideas. They still use bits for input, output and control.
+Every classical program can be built from a few simple gates like AND, OR and NOT (even NAND alone is enough). A modern chip has billions of them. A bit is always exactly 0 or 1, and you can copy it and read it as often as you like. Qubits break all three of these habits.
+k NAND alone is a universal set for classical logic.
+k Classical bits can be copied and read without changing them; qubits cannot.
+## Reversible computing
+A gate is reversible if you can always work out the input from the output. NOT is reversible; AND is not (output 0 could come from 00, 01 or 10). Quantum gates must be reversible, and the Toffoli gate shows that any classical computation can be made reversible.
+~ Mixing paint is not reversible: you can't un-mix it. Turning a key is reversible: you can turn it back. Quantum gates must be like the key.
+x reversible means slow or useless. Any normal program can be rewritten in a reversible way, with some extra helper bits.
+A gate is reversible if you can always work out the input from the output. AND is not reversible: the output 0 could come from three different inputs. The Toffoli gate is a reversible version of AND. Since quantum gates are unitary, every quantum gate is reversible, so classical logic inside quantum circuits is built from gates like Toffoli.
+k Landauer's principle: erasing one bit costs at least $kT\ln 2$ of energy.
+k The Toffoli gate is universal for reversible classical computing.
+## Quantum mechanics basics
+Three big ideas: **superposition** (a system can be in a combination of states), **measurement** (looking gives one definite outcome, at random, and changes the state), and **interference** (amplitudes can add up or cancel out like waves). Quantum computers use all three.
+A famous example is the double-slit experiment: single particles sent through two slits build up a striped pattern, as if each one went through both slits and interfered with itself. Try the double-slit visual below.
+~ Waves in a pond can add up into a big wave or cancel into calm water. Quantum amplitudes behave like these waves.
+x superposition means "it's both 0 and 1, so it checks every answer at once". The truth is subtler: you only get one answer when you look, so you need interference to make the right answer likely.
+In quantum physics, the state of a system is described by amplitudes, not by definite values. The amplitudes evolve smoothly and predictably until you measure. Measurement is the only moment where randomness enters. Good quantum algorithms arrange the amplitudes so that, at measurement time, the useful answer is very likely.
+$$P(\text{outcome}) = |\text{amplitude}|^2$$
+## Dirac (bra-ket) notation
+A "ket" $|\psi\rangle$ is a column vector (a state). A "bra" $\langle\psi|$ is its conjugate row vector. Put them together: $\langle\phi|\psi\rangle$ is an inner product (a number) and $|\psi\rangle\langle\psi|$ is a matrix. It's just shorthand for linear algebra.
+$$|0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\quad |1\rangle=\begin{pmatrix}0\\1\end{pmatrix}$$
+~ It's like a nickname. Instead of writing a whole column of numbers, you write |ψ⟩, the way you say "Mum" instead of her full name.
+x bra-kets are a new kind of maths. They are just a short way to write vectors and matrices.
+Some handy shortcuts: $|+\rangle$ and $|-\rangle$ are the X-basis states, $\langle\psi|\phi\rangle$ is a number, and $|\psi\rangle\langle\psi|$ is a projector, a matrix that "keeps only the $|\psi\rangle$ part" of any state. Reading bra-kets fluently makes every paper in this field much easier.
+$$|\pm\rangle=\frac{|0\rangle\pm|1\rangle}{\sqrt2}$$
+## Kets and bras as vectors
+A **ket** is written $\ket{\psi}$. It is just a name for a **column vector** of complex numbers. For one qubit the column has 2 entries: $\ket{\psi}=\begin{pmatrix}\alpha\\\beta\end{pmatrix}$. The letter inside (ψ, φ, 0, +…) is only a label, like a name tag.
+In plain words: a bra is a ket turned on its side, ready to be multiplied with another ket. A **bra** is written $\bra{\psi}$. It is the **conjugate transpose** of the ket: turn the column into a row, and flip the sign of every imaginary part. So $\bra{\psi}=(\alpha^*,\ \beta^*)$. The star $^*$ means "complex conjugate": $(a+bi)^*=a-bi$.
+Why the funny brackets? Paul Dirac split the word "bracket" into two halves: "bra" ⟨ | and "ket" | ⟩. When you join a bra and a ket, you get a full bracket $\braket{\phi}{\psi}$, which is a single number.
+$$\ket{\psi}=\begin{pmatrix}\alpha\\ \beta\end{pmatrix},\qquad \bra{\psi}=\ket{\psi}^\dagger=\begin{pmatrix}\alpha^* & \beta^*\end{pmatrix}$$
+$$\ket{0}=\begin{pmatrix}1\\0\end{pmatrix},\qquad \ket{1}=\begin{pmatrix}0\\1\end{pmatrix},\qquad \ket{\psi}=\alpha\ket{0}+\beta\ket{1}$$
+~ A ket is like a parcel with a label on it. The label (ψ) is short; the contents (the column of numbers) can be long. A bra is the same parcel's "mirror image" that can plug into a ket.
+x a bra is just the ket written sideways. You must also take the complex conjugate. Forgetting the star is the most common ket mistake.
+## The six famous single-qubit kets
+Six states appear everywhere. They sit at the six "ends" of the Bloch sphere: north and south ($\ket{0}$, $\ket{1}$), front and back ($\ket{+}$, $\ket{-}$), and left and right ($\ket{i}$, $\ket{-i}$). Each pair is a basis: Z basis, X basis and Y basis.
+$\ket{+}$ and $\ket{-}$ have the same amounts of $\ket{0}$ and $\ket{1}$. Only the sign between them differs. $\ket{i}$ and $\ket{-i}$ use $\pm i$ instead of a sign. These tiny differences in phase are invisible in a Z measurement but matter a lot for interference.
+$$\ket{\pm}=\frac{\ket{0}\pm\ket{1}}{\sqrt2}=\frac{1}{\sqrt2}\begin{pmatrix}1\\ \pm1\end{pmatrix},\qquad \ket{\pm i}=\frac{\ket{0}\pm i\ket{1}}{\sqrt2}=\frac{1}{\sqrt2}\begin{pmatrix}1\\ \pm i\end{pmatrix}$$
+~ Think of the six faces of a dice standing on a table: top/bottom, front/back, left/right. Every qubit direction is somewhere between them.
+x $\ket{+}$ and $\ket{-}$ are the same because they give the same Z-measurement results. They are different states: H turns $\ket{+}$ into $\ket{0}$ and $\ket{-}$ into $\ket{1}$.
+## Inner products ⟨φ|ψ⟩: overlap, normalisation, orthogonality
+Put a bra in front of a ket and multiply like a row times a column. The result $\braket{\phi}{\psi}$ is one complex number. It measures **overlap**: how much of $\ket{\psi}$ "points along" $\ket{\phi}$.
+Its squared size is a probability: if the qubit is in $\ket{\psi}$ and you test "is it $\ket{\phi}$?", the answer is yes with probability $|\braket{\phi}{\psi}|^2$. Example: $|\braket{0}{+}|^2=\tfrac12$.
+**Normalisation** means $\braket{\psi}{\psi}=1$: all probabilities add up to 1. **Orthogonal** means $\braket{\phi}{\psi}=0$: the two states can be told apart perfectly, like $\ket{0}$ and $\ket{1}$, or $\ket{+}$ and $\ket{-}$.
+$$\braket{\phi}{\psi}=\phi_0^*\psi_0+\phi_1^*\psi_1,\qquad P(\phi\mid\psi)=|\braket{\phi}{\psi}|^2$$
+$$\braket{\psi}{\psi}=|\alpha|^2+|\beta|^2=1,\qquad \braket{\phi}{\psi}=\braket{\psi}{\phi}^*$$
+~ Two torches: the overlap is how much their beams point the same way. Same direction = full overlap (1). At right angles = no overlap (0).
+x the order doesn't matter. $\braket{\phi}{\psi}$ and $\braket{\psi}{\phi}$ are complex conjugates of each other. They have the same size, but can have different phases.
+## Outer products and projectors |ψ⟩⟨φ|
+Put the ket **first** and the bra **second**: $\ket{\psi}\bra{\phi}$. Now it's a column times a row, which gives a whole **matrix**, not a number. These "outer products" are the building blocks of every gate and every measurement.
+A special case is $\ket{\psi}\bra{\psi}$, called a **projector**. It keeps only the part of a state that points along $\ket{\psi}$ and throws the rest away. For example $\ket{0}\bra{0}$ keeps the $\ket{0}$ part. Doing it twice is the same as doing it once: $P^2=P$.
+The projectors of a basis add up to the identity: $\ket{0}\bra{0}+\ket{1}\bra{1}=I$. This "completeness" rule is used all the time to insert a basis into a calculation.
+$$\ket{a}\bra{b}=\begin{pmatrix}a_0b_0^*&a_0b_1^*\\ a_1b_0^*&a_1b_1^*\end{pmatrix},\qquad \ket{0}\bra{0}=\begin{pmatrix}1&0\\0&0\end{pmatrix},\qquad \ket{0}\bra{1}=\begin{pmatrix}0&1\\0&0\end{pmatrix}$$
+$$P=\ket{\psi}\bra{\psi},\quad P^2=P,\qquad \ket{0}\bra{0}+\ket{1}\bra{1}=I$$
+~ A projector is like a polarising filter: it only lets through light in one direction. Put two identical filters in a row and the second one changes nothing.
+x $\ket{\psi}\bra{\psi}$ and $\braket{\psi}{\psi}$ are the same. The first is a matrix (a projector); the second is the number 1 for a normalised state.
+## Operators acting on kets
+A gate is a matrix, and it acts on a ket by matrix multiplication: $X\ket{0}=\ket{1}$, $X\ket{1}=\ket{0}$, $Z\ket{1}=-\ket{1}$, $H\ket{0}=\ket{+}$. Because gates are linear, you can apply them term by term: $X(\alpha\ket{0}+\beta\ket{1})=\alpha\ket{1}+\beta\ket{0}$.
+Any gate can be written as a sum of outer products: "send this ket to that ket". For example, X sends $\ket{0}\to\ket{1}$ and $\ket{1}\to\ket{0}$, so $X=\ket{1}\bra{0}+\ket{0}\bra{1}$. This is often the fastest way to read or design a gate.
+$$X=\ket{0}\bra{1}+\ket{1}\bra{0},\quad Z=\ket{0}\bra{0}-\ket{1}\bra{1},\quad H=\ket{+}\bra{0}+\ket{-}\bra{1}$$
+$$\mathrm{CNOT}=\ket{0}\bra{0}\otimes I+\ket{1}\bra{1}\otimes X$$
+~ Writing $X=\ket{1}\bra{0}+\ket{0}\bra{1}$ is like a list of instructions on a train switch: "if you arrive on track 0, leave on track 1; if you arrive on track 1, leave on track 0".
+x $\bra{\psi}U$ means U acting on the bra. Bras are acted on from the right, and $(U\ket{\psi})^\dagger=\bra{\psi}U^\dagger$, with a dagger on U.
+## Multi-qubit kets and tensor products
+In plain words: to describe several qubits at once, we join their lists of numbers. For several qubits, we glue kets together with the tensor product ⊗. We usually drop the symbol: $\ket{0}\otimes\ket{1}=\ket{0}\ket{1}=\ket{01}$. Two qubits have four basis kets, $\ket{00},\ket{01},\ket{10},\ket{11}$, and each one is a 4-entry column with a single 1.
+The tensor product of two columns: take each entry of the first column and multiply it by the whole second column. That's how $\ket{+}\ket{0}$ becomes $\tfrac{1}{\sqrt2}(1,0,1,0)$.
+Bell states are written neatly in kets. They can't be split into "one ket ⊗ another ket", and that is exactly what entanglement means.
+$$\ket{00}=\begin{pmatrix}1\\0\\0\\0\end{pmatrix},\ \ket{01}=\begin{pmatrix}0\\1\\0\\0\end{pmatrix},\ \ket{10}=\begin{pmatrix}0\\0\\1\\0\end{pmatrix},\ \ket{11}=\begin{pmatrix}0\\0\\0\\1\end{pmatrix}$$
+$$\begin{pmatrix}a_0\\a_1\end{pmatrix}\otimes\begin{pmatrix}b_0\\b_1\end{pmatrix}=\begin{pmatrix}a_0b_0\\a_0b_1\\a_1b_0\\a_1b_1\end{pmatrix},\qquad (A\otimes B)(\ket{a}\otimes\ket{b})=A\ket{a}\otimes B\ket{b}$$
+$$\ket{\Phi^\pm}=\frac{\ket{00}\pm\ket{11}}{\sqrt2},\qquad \ket{\Psi^\pm}=\frac{\ket{01}\pm\ket{10}}{\sqrt2}$$
+~ Like making outfits: 2 shirts ⊗ 2 trousers = 4 outfits. Each outfit is one basis ket like $\ket{01}$.
+x the tensor product is the same as adding the vectors. It multiplies sizes: 2 ⊗ 2 = 4 entries, and n qubits give $2^n$ entries.
+## Expectation values ⟨ψ|A|ψ⟩
+If you measure a quantity A (like Z) many times on the same state, the **average** result is $\bra{\psi}A\ket{\psi}$, a "sandwich" of the matrix between a bra and a ket. For Z, results are +1 (for 0) and −1 (for 1), so $\langle Z\rangle=P(0)-P(1)$.
+These averages are exactly what VQE and many experiments measure. On the Bloch sphere, $\langle X\rangle,\langle Y\rangle,\langle Z\rangle$ are just the x, y and z coordinates of the arrow.
+$$\langle A\rangle=\bra{\psi}A\ket{\psi}=\sum_k a_k\,|\braket{a_k}{\psi}|^2,\qquad \langle Z\rangle=|\alpha|^2-|\beta|^2$$
+~ Like a class's average test score: you don't learn any single student's mark, but you learn the typical result.
+x an expectation value is a result you can actually get. $\langle Z\rangle=0$ for $\ket{+}$, but every single measurement gives +1 or −1, never 0.
+## Ket notation cheat sheet
+Use this table as a quick reference. Read each row left to right: the symbol, what kind of object it is, and a small example.
+H <div class="tw"><table class="cheat"><tr><th>Write</th><th>Say</th><th>What it is</th><th>Example</th></tr><tr><td>$\ket{\psi}$</td><td>ket psi</td><td>column vector (a state)</td><td>$\ket{0}=(1,0)^T$</td></tr><tr><td>$\bra{\psi}$</td><td>bra psi</td><td>conjugate row vector</td><td>$\bra{i}=\tfrac{1}{\sqrt2}(1,\,-i)$</td></tr><tr><td>$\braket{\phi}{\psi}$</td><td>bracket</td><td>a number (overlap)</td><td>$\braket{0}{+}=\tfrac{1}{\sqrt2}$</td></tr><tr><td>$|\braket{\phi}{\psi}|^2$</td><td>overlap squared</td><td>a probability</td><td>$|\braket{0}{+}|^2=\tfrac12$</td></tr><tr><td>$\ket{\psi}\bra{\phi}$</td><td>outer product</td><td>a matrix</td><td>$\ket{0}\bra{1}=\begin{pmatrix}0&1\\0&0\end{pmatrix}$</td></tr><tr><td>$\ket{\psi}\bra{\psi}$</td><td>projector</td><td>matrix with $P^2=P$</td><td>$\ket{1}\bra{1}=\begin{pmatrix}0&0\\0&1\end{pmatrix}$</td></tr><tr><td>$U\ket{\psi}$</td><td>U on psi</td><td>new ket</td><td>$X\ket{0}=\ket{1}$</td></tr><tr><td>$\bra{\psi}A\ket{\psi}$</td><td>expectation of A</td><td>average result</td><td>$\bra{+}X\ket{+}=1$</td></tr><tr><td>$\ket{a}\otimes\ket{b}$</td><td>tensor product</td><td>joint state</td><td>$\ket{0}\otimes\ket{1}=\ket{01}$</td></tr><tr><td>$\ket{\psi}^\dagger$</td><td>dagger</td><td>turns ket into bra</td><td>$\ket{\psi}^\dagger=\bra{\psi}$</td></tr></table></div>
+$$\text{number}=\braket{\cdot}{\cdot},\qquad \text{matrix}=\ket{\cdot}\bra{\cdot},\qquad \text{state}=\ket{\cdot}$$
+~ Simple rule: bra–ket (⟨ | ⟩) closes into a number; ket–bra (| ⟩⟨ |) opens into a matrix.
+x mixing up the order. $\braket{a}{b}$ is a number, but $\ket{a}\bra{b}$ is a matrix. The order of bra and ket changes the type of object completely.
+## Hamiltonians and the Schrödinger equation
+A **Hamiltonian** $H$ is the matrix for a system's energy. It also decides how the state changes in time, through the Schrödinger equation. The solution is a unitary $U(t)=e^{-iHt/\hbar}$, so every quantum gate is really "let some Hamiltonian act for a certain time".
+The eigenvalues of $H$ are the allowed energies. The eigenvector with the smallest eigenvalue is the **ground state**, which is what VQE and quantum chemistry try to find.
+$$i\hbar\frac{d}{dt}\ket{\psi(t)}=H\ket{\psi(t)},\qquad \ket{\psi(t)}=e^{-iHt/\hbar}\ket{\psi(0)}$$
+~ The Hamiltonian is like the rulebook of a board game: it says how every piece moves from one turn to the next.
+x the Hamiltonian is a gate. H (Hamiltonian) is Hermitian, not unitary; the gate is $e^{-iHt}$. Also don't confuse it with the Hadamard gate, which is also written H.
+## Commutators and the uncertainty principle
+In plain words: two steps commute if their order does not matter. Two matrices **commute** if $AB=BA$. The commutator $[A,B]=AB-BA$ measures how much they fail to commute. Quantities whose matrices don't commute, like $X$ and $Z$, can't both have sure values at the same time. This is the uncertainty principle.
+That is why a qubit sure to be $\ket{0}$ (a sure Z result) gives a 50/50 random result in the X basis.
+$$[A,B]=AB-BA,\qquad [X,Z]=-2iY,\qquad \Delta A\,\Delta B\ge\tfrac12|\langle[A,B]\rangle|$$
+~ Like a photo of a fast car: a sharp position (short exposure) blurs the speed, and a clear speed (long exposure) blurs the position.
+x uncertainty is caused by clumsy measuring tools. It is built into the maths of non-commuting quantities, even with perfect equipment.
+! Quantum computing = linear algebra with complex numbers. States are vectors, gates are unitary matrices, and measurement turns amplitudes into probabilities.
+@ complex
+@ ketvec
+@ kettensor
+? What is $\bra{\psi}$ for $\ket{\psi}=\tfrac{1}{\sqrt2}(\ket{0}+i\ket{1})$? ;; $\tfrac{1}{\sqrt2}(1,\ i)$ as a row ;; *$\tfrac{1}{\sqrt2}(1,\ -i)$ as a row ;; The same column ;; The number 1 || A bra is the conjugate transpose: make it a row AND flip the sign of $i$.
+? What kind of object is $\ket{0}\bra{1}$? ;; A number ;; A ket ;; *A 2×2 matrix ;; A probability || Ket then bra (column times row) gives a matrix: here $\begin{pmatrix}0&1\\0&0\end{pmatrix}$.
+? What is $|\braket{0}{-}|^2$? ;; 0 ;; *1/2 ;; 1 ;; −1/2 || $\braket{0}{-}=1/\sqrt2$, and its square is 1/2.
+? Which equals $\ket{0}\otimes\ket{1}$ as a 4-vector? ;; (1,0,0,0) ;; *(0,1,0,0) ;; (0,0,1,0) ;; (0,1,1,0) || $\ket{01}$ has its 1 in the second slot: $(1\cdot0,\,1\cdot1,\,0,\,0)$.
+@ slit
+? In the double-slit visual, what happens when a detector tells you which slit was used? ;; The stripes get sharper ;; *The stripes disappear ;; Nothing changes ;; The particles stop || Knowing the path removes interference: probabilities add instead of amplitudes.
+? What is $|3+4i|$? ;; 7 ;; *5 ;; 25 ;; 1 || $\sqrt{3^2+4^2}=5$.
+? Every quantum gate is described by a... ;; Hermitian matrix only ;; *Unitary matrix ;; Random matrix ;; Diagonal matrix || Unitary matrices preserve length (total probability) and are reversible.
+? How many amplitudes describe 10 qubits? ;; 10 ;; 20 ;; 100 ;; *1024 || $2^{10}=1024$.

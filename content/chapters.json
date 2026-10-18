@@ -1,0 +1,16 @@
+{
+  "chapters": [
+    "found",
+    "qubits",
+    "gates",
+    "info",
+    "algo",
+    "qec",
+    "hw",
+    "nisq",
+    "cx",
+    "crypto",
+    "programming",
+    "adv"
+  ]
+}

@@ -1,0 +1,117 @@
+# qubits | Qubits | ⚛️
+> A qubit is the quantum version of a bit. It can be $|0\rangle$, $|1\rangle$, or a blend of both, and that blend has a direction you can picture on a sphere.
+" Those who are not shocked when they first come across quantum theory cannot possibly have understood it. | Niels Bohr, 1952, as recalled by Werner Heisenberg in Physics and Beyond
+## How qubits are made (a chip's journey)
+Here is how a **superconducting qubit** chip is made, step by step. It uses many of the same tools as normal computer chips. Use the stepper below to follow along.
+H <div class="fab" id="fab"><div class="fabsvg"></div><p class="fabtxt" aria-live="polite"></p><div class="btnrow"><button type="button" class="fprev">← Back</button><button type="button" class="fnext pri2">Next step →</button><button type="button" class="fplay">▶ Play</button></div></div>
+**1. Clean the wafer.** Start with a very pure, round **silicon** or **sapphire** wafer. It is cleaned with strong chemicals (and sometimes heated) to remove dust and thin oxide layers. Any dirt left here can steal energy from the qubit later.
+**2. Coat it with metal (deposition).** A thin film of superconducting metal, about 100–200 nanometres thick, is laid down on the wafer. The metal is **aluminium**, **niobium** or **tantalum**. Machines do this by **sputtering** (knocking atoms off a metal target) or **evaporation** (heating metal until its vapour lands on the wafer).
+**3. Draw the circuit (lithography).** The wafer is coated with a light-sensitive layer called **resist**. Light or an electron beam draws the circuit pattern into it. Then the unwanted metal is **etched** away, leaving capacitor pads, wiring and readout resonators.
+**4. Make the Josephson junction.** A tiny bridge of resist is made with an electron beam. Aluminium is evaporated from one angle, then a little oxygen is let in so the surface grows a 1–2 nm layer of **aluminium oxide**. Then aluminium is evaporated again from a different angle. Where the two layers overlap under the bridge, you get **Al / AlOx / Al**: the junction. This trick is called **double-angle shadow evaporation**.
+**5. Cut into chips (dicing).** The wafer is sawn into many small chips. Leftover resist is washed off.
+**6. Connect and package.** Each chip is glued into a **copper box** or circuit board and joined to it with tiny **wire bonds**. Some processors instead use **flip-chip bump bonding**: two chips are stacked face to face and joined with tiny metal bumps (often indium), so wiring can reach many qubits.
+**7. Cool it down and wire it up.** The package is bolted to the coldest plate of a **dilution refrigerator** (about 10 mK). Coaxial cables carry **microwave** signals down through several cold stages, with filters and attenuators at each stage to block heat and noise. Microwave pulses then control and read the qubits.
+**Other qubit types are built differently.** **Trapped ions**: a chip-like electrode trap sits inside an ultra-high vacuum chamber; atoms are heated out of a small oven, ionised by a laser, and caught by the electric fields. **Silicon spin qubits**: made in fabs like normal transistor chips (CMOS-style processes), with tiny gate electrodes that trap single electrons, often on isotopically purified silicon-28. **Photonic chips**: waveguides made of silicon or silicon nitride are patterned with lithography, and light sources and detectors are added on or next to the chip.
+~ Making a qubit chip is like making a very fine circuit board, then baking the "solder joint" (the junction) in a special two-step way, then putting it in the world's coldest freezer.
+## Phase and interference: the secret ingredient
+Each amplitude has a size and a **phase**. Phase is like the direction an arrow points. You cannot see phase directly when you measure, but it matters a lot.
+When two paths lead to the same result, their amplitudes add up. If the arrows point the same way, they make a bigger arrow: the result gets **more** likely (**constructive interference**). If they point opposite ways, they cancel: the result becomes **less** likely or even impossible (**destructive interference**).
+Step-by-step example: 1) Start with |0⟩. 2) Apply H: you get the mix (|0⟩ + |1⟩)/√2. 3) Apply H again. There are two paths to |1⟩, one with a + sign and one with a − sign, so they cancel. Both paths to |0⟩ have + signs, so they add. 4) You measure |0⟩ every time.
+~ Noise-cancelling headphones play a sound wave that is the exact opposite of the noise. The two waves cancel, and you hear silence. Quantum algorithms do the same thing to wrong answers.
+x Phase is not "hidden information you can read". A single measurement never shows the phase. You only see its effect when paths interfere.
+## Start here: bit vs qubit
+A normal computer stores everything as **bits**. A bit is a tiny switch. It is either 0 or 1, nothing else.
+A **qubit** (quantum bit) is different. Before you look at it, it can be in a mix of 0 and 1 at the same time. This mix is called a **superposition**.
+The mix has two numbers inside it, called **amplitudes**. They tell you how likely each answer is. If a qubit is "70% 0 and 30% 1", you get 0 about 7 times out of 10 when you check it.
+~ A bit is a coin lying on a table: heads or tails. A qubit is a coin spinning in the air: it is not yet heads or tails, but it has a "lean" toward one side.
+x A qubit does not secretly hold both answers for you to read. When you look, you get only one answer, 0 or 1.
+## Measurement: looking changes things
+**Measurement** means reading a qubit. When you measure, the superposition ends. The qubit "picks" 0 or 1, with the chances set by its amplitudes, and then it stays on that answer.
+Step by step: 1) the qubit is in a mix, say 50% 0 and 50% 1. 2) You measure. 3) You get, for example, 1. 4) If you measure again right away, you get 1 again. The mix is gone.
+This is why quantum programs are careful: they do all the work first and measure only at the end.
+~ It is like catching the spinning coin. Once you catch it, it is heads or tails, and it stays that way.
+## |0⟩ and |1⟩
+These are the two "basis states" of a qubit, like 0 and 1 of a normal bit. Physically they could be two energy levels of an atom, two directions of an electron spin, or two paths of a photon.
+In maths we write them as column vectors: $|0\rangle=(1,0)$ and $|1\rangle=(0,1)$. They are "orthogonal", which means a measurement can tell them apart perfectly. Every other qubit state is built by mixing these two with complex amplitudes.
+~ Like the two faces of a coin lying on the table: heads or tails.
+x a qubit is a tiny ball that is either 0 or 1 inside. Before measurement, it can be in a true mix of both.
+They are the "computational basis". When a quantum computer reports a result, it is always a string of 0s and 1s in this basis. To look in another basis (like X), you first apply a gate (like H) and then measure in the normal Z basis.
+$$|0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\qquad |1\rangle=\begin{pmatrix}0\\1\end{pmatrix},\qquad \langle 0|1\rangle = 0$$
+## Superposition
+A general qubit state is $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$ with complex amplitudes $\alpha,\beta$. It is not "secretly 0 or 1"; both amplitudes are real parts of the state and can interfere. But when you measure, you only ever see 0 or 1.
+$$|\psi\rangle = \alpha|0\rangle + \beta|1\rangle,\qquad |\alpha|^2+|\beta|^2=1$$
+~ A spinning coin is not heads or tails yet. (This is just a picture to help: a real qubit also has phase, which a coin doesn't.)
+x a superposition is just "we don't know which one it is". No. The parts can interfere, which a simple "unknown" state can't do.
+Superposition is not "secretly 0 or 1, we just don't know". The state $|+\rangle$ is a definite state. It just isn't $|0\rangle$ or $|1\rangle$. You can prove it: apply H to $|+\rangle$ and you get $|0\rangle$ every single time. A random coin could never do that.
+## The Bloch sphere
+Any single pure qubit state can be written with two angles, $\theta$ and $\varphi$, and drawn as a point on a sphere. North pole is $|0\rangle$, south pole is $|1\rangle$, and the equator holds equal superpositions like $|+\rangle$. Gates are rotations of this sphere.
+$$|\psi\rangle=\cos\tfrac{\theta}{2}|0\rangle+e^{i\varphi}\sin\tfrac{\theta}{2}|1\rangle$$
+~ Think of the Earth. North pole = |0⟩, south pole = |1⟩, and every other place on the surface is a different qubit state.
+x the opposite of |0⟩ is at 180° on the sphere, so states 90° apart are "opposite". On the sphere, opposite points are fully different states, and 90° apart means a 50/50 overlap.
+Every point on the surface is a pure qubit state. Opposite points are orthogonal states, like $|0\rangle$ and $|1\rangle$, or $|+\rangle$ and $|-\rangle$. Single-qubit gates are rotations of the sphere. Height on the sphere tells you the probabilities; the angle around the equator is the phase.
+## Measurement and the Born rule
+The Born rule says: the chance of getting 0 is $|\alpha|^2$, and the chance of getting 1 is $|\beta|^2$. After you measure, the qubit "collapses" to the result you saw. Measuring again gives the same answer.
+$$P(0)=|\alpha|^2,\quad P(1)=|\beta|^2$$
+~ Like a weighted coin: the amplitudes decide how heavy each side is, then the toss decides randomly.
+x measuring just reads the value without changing it. Measuring changes the state; the superposition is gone.
+Measurement is destructive. After you measure and get 0, the qubit is now $|0\rangle$, and the old amplitudes are gone. To estimate the probabilities, you must prepare the same state again and again and measure each copy. This is why quantum programs run thousands of shots.
+## Global vs relative phase
+Multiplying the whole state by $e^{i\gamma}$ (a global phase) changes nothing you can ever measure. But a phase between the two parts (a relative phase, the $\varphi$ in $\alpha|0\rangle+e^{i\varphi}\beta|1\rangle$) matters a lot: $|+\rangle$ and $|-\rangle$ differ only by relative phase, yet they are perfectly distinguishable.
+~ Turning a whole photo upside down doesn't change the people in it (global phase). Moving one person in the photo changes the picture (relative phase).
+x phase doesn't matter because it doesn't change probabilities right now. Relative phase changes what happens after the next gate.
+Phase gates like Z, S and T change the relative phase. On their own they do not change Z-basis probabilities, but after a Hadamard they change the result completely. Phase is "hidden information" that interference turns into visible differences.
+$$e^{i\gamma}|\psi\rangle \equiv |\psi\rangle,\qquad \alpha|0\rangle+e^{i\varphi}\beta|1\rangle \text{ depends on } \varphi$$
+## Multi-qubit states
+Two qubits have four basis states: $|00\rangle,|01\rangle,|10\rangle,|11\rangle$. A general state is a superposition of all four, with 4 amplitudes. With $n$ qubits you have $2^n$ amplitudes.
+~ Two dice have 36 combined outcomes, not 12. Many qubits also have a huge number of combined states.
+x you can always describe each qubit separately. When qubits are entangled, you can't.
+We usually write basis states as bit strings, like $|101\rangle$. A general 3-qubit state is a mix of all 8 such strings. Storing these $2^n$ amplitudes is what makes quantum computers hard to simulate on normal computers once $n$ passes about 50.
+$$|\psi\rangle=\sum_{x\in\{0,1\}^n}\alpha_x|x\rangle,\qquad \sum_x|\alpha_x|^2=1$$
+## Entanglement and Bell states
+Some multi-qubit states cannot be split into "qubit A's state" times "qubit B's state". These are entangled. The famous Bell state below always gives matching results: if A reads 0, B reads 0. The outcomes are random, but perfectly correlated, even far apart. (It can't be used to send messages faster than light.)
+$$|\Phi^+\rangle=\frac{|00\rangle+|11\rangle}{\sqrt2}$$
+~ Imagine two magic coins: whenever you flip them, they always land the same way, even in different cities. (A rough picture: real entanglement is even stranger.)
+x entanglement lets you send messages faster than light. It doesn't. Each side alone sees only random results.
+Entanglement is a resource. It powers teleportation, superdense coding, quantum key distribution and many algorithms. To make a Bell state, you need just two gates: H on the first qubit, then CNOT. Measuring one qubit instantly tells you the other's result, but cannot be used to send a message.
+## The no-cloning theorem
+You cannot build a machine that copies an unknown quantum state. This follows directly from quantum maths being linear. It is why quantum cryptography is secure and why quantum error correction has to be clever.
+~ You can photocopy a page, but you can't photocopy a soap bubble's exact shape without popping it. Unknown quantum states are like the bubble.
+x no-cloning means you can't copy anything quantum. You can copy a state you already know, or copy |0⟩ and |1⟩. You just can't copy an unknown state.
+No-cloning is why quantum information is so different from normal data. You can't back up a qubit or read it twice. It is also a gift: a spy cannot copy your quantum key without leaving traces. Error correction must therefore work without copying, using entanglement and parity checks instead.
+$$\nexists\,U:\ U|\psi\rangle|0\rangle=|\psi\rangle|\psi\rangle\ \text{for all }|\psi\rangle$$
+## Density matrices: pure vs mixed states
+A density matrix $\rho$ describes states including uncertainty. A pure state is $\rho=|\psi\rangle\langle\psi|$ and sits on the surface of the Bloch sphere. A mixed state is a random mixture of pure states and sits inside the sphere; the fully mixed state $I/2$ is at the centre.
+$$\rho=\sum_k p_k|\psi_k\rangle\langle\psi_k|,\qquad \text{purity}=\mathrm{Tr}(\rho^2)$$
+~ Pure state: a perfectly tuned guitar note. Mixed state: a noisy recording where you're not sure which note it was.
+x a 50/50 mixture is the same as the superposition |+⟩. Both give 50/50 in the Z basis, but only |+⟩ gives a sure answer in the X basis.
+For one qubit, every density matrix can be written with a Bloch vector $\vec r$ of length at most 1. Length 1 means pure; shorter means mixed. The diagonal entries are the measurement probabilities; the off-diagonal entries ("coherences") hold the phase information that noise destroys first.
+$$\rho=\tfrac12\left(I+x X+y Y+z Z\right),\qquad \mathrm{Tr}(\rho^2)=\tfrac{1+|\vec r|^2}{2}$$
+## Partial measurement and the reduced density matrix
+You can measure just one qubit of a larger system. The probability of each result comes from adding up all amplitudes that match it. The remaining qubits then "collapse" to the matching part, renormalised.
+If you ignore one part of an entangled system, the part you keep is described by a **reduced density matrix**, found with the "partial trace". For a Bell state, each qubit alone is the fully mixed state $I/2$: totally random, even though the pair together is a pure state.
+$$P(q_0=0)=\sum_{x:\,x_0=0}|\alpha_x|^2,\qquad \rho_A=\mathrm{Tr}_B\,\ket{\psi}\bra{\psi}$$
+$$\mathrm{Tr}_B\,\ket{\Phi^+}\bra{\Phi^+}=\tfrac12 I$$
+~ Two halves of a torn ticket: each half alone looks meaningless, but together they match perfectly.
+x measuring one qubit leaves the others unchanged. If they are entangled, measuring one changes the state of the rest.
+## Qudits: more than two levels
+A **qudit** has d levels instead of 2, for example a "qutrit" with levels 0, 1 and 2. Some hardware naturally has extra levels (atoms, ions, superconducting circuits, photons).
+Qudits can store more per device and sometimes simplify circuits, but control and error correction get harder. Most of today's machines still use qubits.
+## Measuring in different ways: projective measurements and POVMs
+The usual measurement asks "0 or 1?". That is a **projective measurement** in the Z basis. You can also measure in other bases, like X ("+ or −?"), by applying a gate first.
+A **POVM** is the most general kind of measurement. It can have more outcomes than the number of levels, for example using a helper qubit. POVMs are useful in cryptography and for telling states apart as well as possible.
+## Quantum state tomography: finding an unknown state
+One measurement cannot tell you a qubit's state. **Tomography** prepares the same state many times and measures it in different bases (X, Y and Z), then rebuilds the state from the statistics.
+For one qubit, the averages of X, Y and Z are exactly the three coordinates of the Bloch-sphere arrow. Try it below.
+H <div class="tomo6" id="tomo6"><div class="btnrow"><button type="button" class="newst">New secret state</button><button type="button" class="m" data-b="X">Measure X ×200</button><button type="button" class="m" data-b="Y">Measure Y ×200</button><button type="button" class="m" data-b="Z">Measure Z ×200</button><button type="button" class="rev">Reveal</button></div><div class="out6" aria-live="polite"></div></div>
+The catch: the work grows exponentially with the number of qubits, so for big systems people use shortcuts like "classical shadows".
+! A qubit holds two complex amplitudes, but a measurement gives just one bit. The power comes from how amplitudes interfere before you measure.
+@ bloch
+@ bell
+@ bloch3d
+@ ball
+@ qrng
+@ space
+? Where on the Bloch ball is the fully mixed state $I/2$? ;; North pole ;; On the equator ;; *At the centre ;; Outside the sphere || Its Bloch vector has length 0, purity 1/2 and entropy 1 bit.
+? A qubit is $\tfrac{1}{2}|0\rangle+\tfrac{\sqrt3}{2}|1\rangle$. What is $P(1)$? ;; 1/2 ;; *3/4 ;; √3/2 ;; 1/4 || $|\sqrt3/2|^2 = 3/4$.
+? Where is $|1\rangle$ on the Bloch sphere? ;; North pole ;; *South pole ;; Equator ;; Centre || North is $|0\rangle$, south is $|1\rangle$.
+? Which of these can you observe? ;; Global phase ;; *Relative phase ;; Neither ;; Both always || Global phase is invisible; relative phase affects interference.

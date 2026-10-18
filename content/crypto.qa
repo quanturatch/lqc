@@ -1,0 +1,56 @@
+# crypto | Communication & cryptography | 🔐
+> Quantum physics both threatens today's encryption and offers new ways to communicate securely.
+" I would not call that one but rather the characteristic trait of quantum mechanics. (on entanglement) | Erwin Schrödinger, Discussion of Probability Relations Between Separated Systems (1935)
+## Quantum key distribution: BB84
+Alice sends photons in randomly chosen bases (+ or ×); Bob measures in random bases. They publicly compare bases (not bits) and keep the matching ones as a shared key. An eavesdropper must measure and disturb the photons, raising the error rate (about 25% on intercepted bits), so she gets caught.
+~ Like sending a letter sealed with a special wax that cracks if anyone opens it. You'd know if someone peeked.
+x QKD makes everything unhackable. Real devices can have weaknesses, and you still need a way to confirm who you're talking to.
+After sending, Alice and Bob publicly compare which bases they used (not the bits) and keep only matching ones: the "sifted key". They then reveal a small sample to estimate errors. If the error rate is low, they fix remaining errors and shrink the key ("privacy amplification") so any spy knows almost nothing about it.
+$$\text{intercept-resend attack} \Rightarrow \text{QBER}\approx 25\%$$
+## E91
+Ekert's protocol uses entangled pairs. Alice and Bob measure their halves and test a Bell inequality: if it's violated as quantum theory predicts, no eavesdropper has spoiled the entanglement, and the correlated results form the key.
+~ Two people share magic linked dice. A special test tells them if anyone has meddled with the dice.
+x E91 sends the key through the entanglement. The key comes from correlated measurements; no message travels through the link.
+In E91, a source sends entangled pairs to Alice and Bob. They measure in random bases. Some results build the key; others test a Bell inequality. If the Bell test is violated strongly, no spy can have much information. This idea leads to "device-independent" security, where you don't even need to trust your own equipment.
+$$|S|>2\ \Rightarrow\ \text{correlations are quantum and private}$$
+## Post-quantum cryptography
+Shor's algorithm would break RSA and elliptic-curve cryptography on a large fault-tolerant machine. Post-quantum cryptography means new classical algorithms (lattice-based, hash-based, code-based) believed to resist quantum attacks. NIST published its first post-quantum standards in 2024.
+~ Changing your locks now to a new design that even a future quantum burglar can't pick.
+x post-quantum crypto uses quantum computers. It's normal maths that runs on today's computers.
+These are normal (classical) algorithms based on maths problems believed to be hard even for quantum computers, such as problems on lattices. They run on today's computers and networks. Standards bodies have already published post-quantum standards, and companies are migrating. "Harvest now, decrypt later" attacks are why migration matters today.
+k Runs on ordinary hardware; no quantum devices needed.
+k Lattice-based schemes are a leading family of post-quantum algorithms.
+## Quantum internet & repeaters
+A quantum internet would share entanglement between distant nodes for QKD, distributed computing and sensing. Photons get lost in fibres and can't be copied or amplified (no-cloning), so quantum repeaters use entanglement swapping and quantum memories to extend range.
+~ Like a relay race: each runner carries the baton (entanglement) a short way, then passes it on.
+x you can boost quantum signals like normal internet signals. No-cloning forbids that, so repeaters work differently.
+Photons get lost in fibre, and you can't simply amplify a quantum signal (no-cloning forbids it). Quantum repeaters solve this by creating entanglement over short links and then joining links with "entanglement swapping". A future quantum internet could link quantum computers and sensors.
+k Loss in fibre grows exponentially with distance.
+k Entanglement swapping joins two short entangled links into one long one.
+## Entanglement swapping and quantum memories
+If A shares a Bell pair with B, and B shares another with C, then B can do a joint "Bell measurement" on its two qubits. Afterwards, A and C are entangled, even though they never interacted. This is **entanglement swapping**, the key step in quantum repeaters.
+Repeaters also need **quantum memories** to hold qubits while waiting for the other links to succeed. Good memories need long coherence times and efficient connections to photons.
+$$\ket{\Phi^+}_{AB_1}\ket{\Phi^+}_{B_2C}\ \xrightarrow{\ \text{Bell measurement on }B_1B_2\ }\ \ket{\Phi^+}_{AC}\ \ (\text{after Pauli fix-up})$$
+~ Like two relay runners passing a baton: the first and last runner never meet, but the baton gets through.
+x entanglement swapping sends information faster than light. B must still send classical results to fix up the final state.
+## Quantum random numbers
+Normal computers make "random" numbers with formulas, which are predictable if you know the start. A **quantum random number generator** measures a truly random quantum event, like a photon at a beam splitter, so no one can predict it. QRNGs are already sold as chips and services.
+## Blind (delegated) quantum computing
+Suppose you rent a quantum computer in the cloud but don't want the owner to see your program or data. **Blind quantum computing** (first full scheme by Broadbent, Fitzsimons and Kashefi, 2009) lets you send carefully disguised qubits so the server runs your computation without learning what it is.
+It needs only simple quantum abilities on your side, like preparing single photons.
+
+## Quantum sensing: SQUIDs and magnetometers
+**Quantum sensors** use the fragility of quantum states as a strength: tiny disturbances change them in a measurable way.
+A **SQUID** (superconducting quantum interference device) uses Josephson junctions to detect extremely weak magnetic fields, such as those from the brain (in MEG scans). **NV centres** in diamond and atomic **magnetometers** also measure tiny fields, sometimes at room temperature. Atomic clocks are quantum sensors of time.
+## QKD in the real world
+**Intuition.** Quantum key distribution (QKD) lets two people make a shared secret key, and physics guarantees that an eavesdropper who measures the photons leaves a trace.
+**Core idea.** In BB84, if Eve measures in the wrong basis she disturbs about 25% of the bits she touches in the sifted key. Alice and Bob compare a sample; if the error rate is low enough, they use **error correction** and **privacy amplification** to boil the rest down to a shorter key that Eve knows essentially nothing about. QKD needs an already authenticated classical channel, so it still needs some pre-shared secret or a classical signature.
+~ A sealed envelope that shows a tear if anyone peeks.
+x QKD is unbreakable in practice. The maths is proven secure, but real devices have flaws (detector blinding attacks have broken commercial systems).
+**Research level.** Photons are lost in fibre, so point-to-point QKD rates fall exponentially with distance (practical links reach a few hundred km). Long networks today use **trusted nodes**, which must themselves be secure. The Chinese satellite Micius (2017) shared keys between ground stations over 1,000+ km. Research directions: decoy states (standard today), measurement-device-independent QKD, twin-field QKD for longer distances, and quantum repeaters (not yet practical). Security agencies such as the NSA, the UK's NCSC and France's ANSSI currently recommend post-quantum cryptography rather than QKD for most uses.
+Sources: Bennett & Brassard (1984); Lydersen et al., Nature Photonics 4 (2010) on detector blinding; Liao et al., Nature 549 (2017); Lucamarini et al., Nature 557 (2018) on twin-field QKD; NSA "Quantum Key Distribution and Quantum Cryptography" guidance.
+k QKD needs authentication and special hardware; PQC runs on ordinary computers.
+! QKD's security comes from physics: measuring disturbs. Post-quantum crypto is the classical defence against future quantum attacks.
+@ bb84
+? In BB84, what do Alice and Bob reveal publicly? ;; Their key bits ;; *Their bases ;; Their photons ;; Nothing || They compare bases, then keep bits where bases matched.
+? Why can't a quantum signal just be amplified? ;; *No-cloning theorem ;; Too expensive ;; Photons are too fast ;; It can || Unknown quantum states can't be copied.

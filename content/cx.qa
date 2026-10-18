@@ -1,0 +1,60 @@
+# cx | Complexity theory | 🧩
+> Some problems are easy for computers and some are very hard. This chapter sorts them out and shows where quantum computers really help, and where they do not.
+" Our best theories are not only truer than common sense, they make more sense than common sense. | David Deutsch, The Fabric of Reality (1997)
+## P and NP
+P: problems a classical computer can solve in polynomial time (like sorting). NP: problems whose answers can be checked quickly (like Sudoku). Whether P = NP is a famous unsolved problem.
+~ P: problems that are easy to solve. NP: problems where a given answer is easy to check, like checking a finished Sudoku.
+x NP means "not polynomial". It means "nondeterministic polynomial": answers can be checked quickly.
+P problems can be solved quickly (in polynomial time). NP problems have answers that are quick to check. Nobody knows if P equals NP; it is one of the biggest open questions in maths. Quantum computers are not believed to solve NP-complete problems quickly.
+k Polynomial time: steps grow like $n^k$ for some fixed $k$.
+k P ⊆ NP; whether P = NP is unknown.
+## BQP
+Bounded-error Quantum Polynomial time: problems a quantum computer solves efficiently with high probability. It contains P (and BPP). Factoring is in BQP thanks to Shor, but it is not believed to be NP-complete.
+~ The set of jobs a quantum computer is good at, with a small chance of error.
+x BQP contains every hard problem. It is believed not to include NP-complete problems.
+BQP stands for "bounded-error quantum polynomial time". A problem is in BQP if a quantum computer can solve it quickly, giving the right answer with probability at least 2/3. Repeating the run a few times and taking the majority makes the error tiny.
+$$P\subseteq BQP\subseteq PSPACE$$
+## QMA
+The quantum version of NP: a quantum "proof" state can be checked efficiently by a quantum computer. Finding the ground energy of a local Hamiltonian is QMA-complete, the quantum analogue of SAT.
+~ A wizard gives you a quantum proof; your quantum computer checks it quickly.
+x QMA is just NP. It allows quantum proofs and is believed to be larger.
+In QMA, a powerful helper ("Merlin") gives a quantum state as proof, and a quantum computer ("Arthur") checks it. A famous QMA-complete problem is finding the ground-state energy of a "local Hamiltonian", a basic physics question. This suggests that even quantum computers can't solve every physics problem quickly.
+k Local Hamiltonian problem is QMA-complete (Kitaev).
+k NP ⊆ QMA.
+## Oracle and query complexity
+Here we count how many times an algorithm must call a black-box function (the oracle). Deutsch–Jozsa, Simon and Grover are all stated this way. Query complexity lets us prove separations that we can't yet prove for normal complexity classes.
+~ Like a game of 20 questions: you count how many questions you need to ask.
+x an oracle speedup is always a real-world speedup. Building the oracle can be expensive.
+Here we count only how many times an algorithm asks a "black box" question. This makes speedups provable. For example, unstructured search needs about $N$ queries classically but only about $\sqrt N$ quantumly (Grover), and no quantum method can do better.
+$$\text{search: } \Theta(N)\ \text{classical vs } \Theta(\sqrt N)\ \text{quantum}$$
+## Limits of quantum speedups
+Quantum computers are not believed to solve NP-complete problems efficiently. For unstructured search, Grover's $\sqrt N$ is proven optimal (the BBBV theorem). All of BQP is inside PSPACE, so quantum computers can't solve anything a classical computer couldn't solve given enough time.
+~ A faster car still can't beat traffic laws. Quantum computers also have limits proven by maths.
+x quantum computers are just faster at everything. Many tasks get no speedup at all.
+Speedups are not free. Grover's quadratic speedup is the best possible for unstructured search. Exponential speedups need special structure, like the hidden periods in factoring. Also, loading data and reading results can take so long that they cancel the speedup.
+k Unstructured search: at most a quadratic speedup.
+k Data loading and readout costs can erase theoretical gains.
+## Dequantization
+**Dequantization** means finding a classical algorithm that matches a claimed quantum speed-up. In 2018, Ewin Tang, then a student, showed a classical method for recommendation systems that came close to a famous quantum algorithm's speed under the same assumptions.
+Lesson: a quantum speed-up must be compared with the best classical method, under fair conditions.
+## How far can normal computers simulate qubits? (tensor networks)
+Storing a full state of n qubits needs 2ⁿ numbers: about 50 qubits already needs petabytes. But many real states have limited entanglement, and **tensor networks** store them in small, linked pieces (for example "matrix product states").
+This lets normal computers simulate some circuits with many qubits, as long as the entanglement stays low. It is why claims of quantum advantage keep being tested by clever classical simulations.
+## Quantum advantage experiments
+A **quantum advantage** experiment (once called "quantum supremacy") picks a task that is believed to be very hard for classical computers, even if the task itself is not useful. The point is to test the idea that quantum machines can do something classical ones cannot.
+~ Like a race on a track designed to suit one runner: winning shows real speed, but not that they are better at every sport.
+x A quantum advantage demo means quantum computers are now useful. These tasks were chosen to be hard, not useful.
+**Intuition.** Run a random circuit and sample its output bitstrings. A classical computer would have to track an enormous, tangled state to produce the same distribution.
+**Core idea.** The theory behind it says that exactly sampling from such circuits, or from photons passing through a large optical network (**boson sampling**), would be impossible to do efficiently on a classical computer unless widely believed complexity conjectures fail (for example, the "polynomial hierarchy" would collapse).
+**Research level.** Google's Sycamore (2019, 53 qubits) sampled random circuits in about 200 seconds and estimated 10,000 years on a supercomputer; IBM replied that about 2.5 days would do, and by 2022 tensor-network methods on GPU clusters had reproduced similar samples in hours. USTC's Jiuzhang (2020) did boson sampling with up to 76 detected photons. Later, larger and less noisy experiments (for example Google's 2024 Willow runs) pushed the claimed classical cost far higher again. Open questions: noise makes classical "spoofing" easier, and verifying the output of a large experiment is itself hard. The contest between quantum demos and classical simulation is a healthy part of the science.
+Sources: Arute et al., Nature 574 (2019); Aaronson & Arkhipov, The computational complexity of linear optics (2011); Zhong et al., Science 370 (2020); Pan, Chen & Zhang, PRL 129 (2022).
+k Advantage ≠ usefulness; the tasks are chosen to be hard to simulate.
+## Dequantization: when classical catches up
+Some proposed quantum speed-ups vanished when someone found a clever classical method. In 2018, Ewin Tang (then an undergraduate) showed that a quantum recommendation-system algorithm could be matched by a classical algorithm that samples from the data in a similar way, with only a polynomial slow-down.
+~ A shortcut looked unique to quantum, until someone found a classical path nearly as short.
+**Research level.** This "dequantization" also applies to several quantum machine-learning algorithms for low-rank data. It teaches a key lesson: a quantum speed-up claim must be compared with the best classical algorithm given the same access to the data, including how the data are loaded. Exponential speed-ups that survive scrutiny (such as Shor's) rely on special structure.
+Sources: Tang, STOC 2019 (arXiv:1807.04271); Chia et al., JACM 2022.
+! BQP is believed to be bigger than P but not to contain NP-complete problems. Quantum speeds up some structured problems, not everything.
+@ venn
+? Which is believed TRUE? ;; BQP contains all NP problems ;; *Factoring is in BQP ;; BQP is outside PSPACE ;; P = BQP is proven || Shor puts factoring in BQP.
+? Grover's √N speedup for unstructured search is... ;; Beatable by exponential algorithms ;; *Provably optimal ;; Only a conjecture ;; Classical || BBBV proved it.

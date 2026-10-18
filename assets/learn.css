@@ -1,0 +1,39 @@
+/* Learning checks, path gates, and account sign-in */
+.donebtn{cursor:default}
+.quiz.locked .opts button{opacity:.45;pointer-events:none}
+.gatebanner{margin:0 0 16px;padding:12px 14px;border-radius:12px;border:1px solid var(--y);background:color-mix(in srgb,var(--y) 12%,var(--glass));color:var(--txt)}
+.taskbox{margin:18px 0;padding:16px 18px;border-radius:16px;border:1px solid var(--line2);background:var(--glass)}
+.taskbox h4{margin:0 0 8px}
+.taskbox .taskmsg{min-height:1.4em;font-weight:700;color:var(--b)}
+#chap a.locked{opacity:.62}
+#map .node.locked circle{stroke-dasharray:4 3;opacity:.55}
+#authDlg{position:fixed;inset:0;z-index:2200;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(2,6,17,.72)}
+#authDlg.on{display:flex}
+#authDlg .card{width:min(420px,100%);padding:18px;border-radius:18px;border:1px solid var(--line2);background:var(--bg2);box-shadow:var(--shadow)}
+#authDlg h2{margin:0 0 8px;font-size:1.25rem}
+#authDlg p{margin:0 0 12px;color:var(--txt2)}
+#authDlg label{display:block;margin:10px 0 4px;font-weight:700}
+#authDlg input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--bg);color:var(--txt);font:inherit}
+#authDlg .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#authDlg .msg{min-height:1.4em;font-weight:700}
+#authDlg .otp,#authDlg .out{min-height:0;padding:0;border:none;background:none;box-shadow:none;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+#authDlg .otp{display:inline-block;margin:8px 0 2px;color:var(--b);font-size:.95rem}
+#authDlg .warn{margin:10px 0 0;text-align:right;color:var(--y);font-size:.82rem;font-weight:700}
+#authDlg .warn:empty{display:none}
+#authDlg .out{display:block;margin:8px 0 0 auto;color:var(--y);font-size:.8rem}
+#authDlg .out.hot{color:var(--r)}
+#authDlg .out[hidden]{display:none}
+#authHome{white-space:nowrap}
+.acct{position:relative;flex:none}
+.acct .pmenu{position:absolute;top:calc(100% + 8px);right:0;z-index:40;width:min(260px,72vw);padding:8px;border-radius:14px;border:1px solid var(--line2);background:var(--bg2);box-shadow:var(--shadow)}
+.acct .pmenu[hidden]{display:none}
+.acct .who{margin:0;padding:8px 10px 10px;color:var(--txt2);font-size:.82rem;font-weight:700;line-height:1.35;overflow-wrap:anywhere}
+.acct .pmenu button{display:flex;width:100%;min-height:40px;padding:8px 10px;border:none;border-radius:10px;background:transparent;box-shadow:none;color:var(--txt);font:inherit;font-weight:700;text-align:left;cursor:pointer}
+.acct .pmenu button[hidden],.acct .who[hidden]{display:none}
+.acct .pmenu button:hover,.acct .pmenu button:focus-visible{background:var(--glass)}
+.acct .pmenu .out{color:var(--y)}
+.acct .pmenu .out.hot{color:var(--r)}
+.acct .warn{margin:4px 10px 6px;color:var(--y);font-size:.78rem;font-weight:700}
+.acct .warn:empty{display:none}
+.acct .iconbtn.in{border-color:var(--b);color:var(--b)}
+html.acct-in .topbar .gear{display:none}

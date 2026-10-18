@@ -1,0 +1,74 @@
+# adv | Advanced topics & research | 🔭
+> The frontier: what researchers are working on to make quantum computers big, reliable and truly useful.
+" The theory says a lot, but does not really bring us any closer to the secret of the 'old one.' I, at any rate, am convinced that He does not throw dice. | Albert Einstein, letter to Max Born (4 December 1926)
+## Quantum simulation
+Feynman's original idea: use quantum systems to simulate other quantum systems, like molecules and materials, which are very hard classically. This is widely seen as one of the most promising applications (chemistry, catalysts, batteries, superconductors).
+~ Using a model aeroplane in a wind tunnel to study a real plane. Use a quantum system to study another quantum system.
+x we already simulate all molecules easily. Big, strongly linked molecules are still very hard for normal computers.
+Feynman's original idea. Nature is quantum, so a quantum computer can mimic molecules, materials and other quantum systems naturally. The time evolution of a system is approximated by many small steps ("Trotterisation"). Many experts think this is the most likely first truly useful application.
+$$e^{-i(A+B)t}\approx\left(e^{-iAt/n}e^{-iBt/n}\right)^{n}$$
+## Hamiltonian simulation and Trotter steps
+To simulate a molecule or material, we want $e^{-iHt}$. Usually $H$ is a sum of simple parts, $H=\sum_j H_j$, each easy to turn into gates. The **Trotter** trick: do each part for a short time, and repeat many times. More steps give a better approximation, at the cost of deeper circuits.
+For a first-order Trotter formula, the error shrinks like $t^2/n$. Higher-order formulas and newer methods ("qubitisation") reduce the cost further.
+$$e^{-i(A+B)t}=\left(e^{-iAt/n}e^{-iBt/n}\right)^n+O\!\left(\frac{t^2}{n}\right)$$
+~ Like walking diagonally across a city grid: you go a short way east, then a short way north, again and again. Smaller steps get closer to the straight line.
+x Trotter steps are exact. They are an approximation, and when $A$ and $B$ don't commute the error is real.
+## Topological QC & anyons
+In 2D materials, exotic quasiparticles called anyons can exist. Braiding them around each other performs gates that depend only on the braid's shape, so small disturbances don't matter. Non-abelian anyons are needed for computing and remain an experimental challenge.
+~ Like braiding hair: the pattern of the braid matters, not the exact wiggles.
+x anyons are normal particles. They are patterns in a material that act like particles.
+Anyons are particle-like excitations that exist only in 2D systems. Swapping ("braiding") them changes the quantum state in a way that depends only on the braid's shape. If you compute with braids, small wobbles don't matter, which could give built-in protection from noise.
+k Braiding paths, not exact timing, determine the gate.
+k Still mainly theoretical and experimental research.
+## Measurement-based (one-way) QC
+Start with a big entangled "cluster state", then compute just by measuring qubits one at a time in chosen bases. It's as powerful as the circuit model and natural for photonic hardware.
+~ Like carving a statue from a block: you start with a big entangled block and remove pieces by measuring.
+x measurements only destroy. Here, chosen measurements push the computation forward.
+Each measurement's basis can depend on earlier results, which is how the computation is steered. The order and angles of the measurements play the role of the gates. Photonic quantum computers often use this model, because making big entangled states of light and measuring them is easier than doing gates on photons one by one.
+$$\text{cluster state: } |C\rangle=\prod_{(a,b)}\mathrm{CZ}_{ab}\,|+\rangle^{\otimes n}$$
+## Adiabatic QC & quantum annealing
+Start in the easy ground state of a simple Hamiltonian and slowly change it into one whose ground state encodes your answer. Done slowly enough, the system stays in its ground state (adiabatic theorem). Ideal adiabatic computing is equivalent to the circuit model; quantum annealers (like D-Wave's) are a specialised, noisier version aimed at optimisation.
+$$H(t)=\left(1-\tfrac{t}{T}\right)H_0+\tfrac{t}{T}H_P$$
+~ Like slowly tilting a tray of marbles so they gently roll into the lowest spot.
+x annealers are general quantum computers. They are specialised and mostly aimed at optimisation.
+The adiabatic theorem says: if you change a system slowly enough, it stays in its lowest-energy state. Start with an easy problem whose answer you know, slowly morph it into your hard problem, and read the answer at the end. "Slowly enough" depends on the energy gap, which can be tiny for hard problems.
+$$H(s)=(1-s)H_0+sH_P,\qquad T\gtrsim\frac{1}{\Delta_{\min}^2}$$
+## Quantum sensing & metrology
+Quantum states are extremely sensitive to their surroundings, which is bad for computing but great for measuring. Atomic clocks, magnetometers (like NV centres) and gravitational-wave detectors with squeezed light use this. Entanglement can push precision from the standard limit ($1/\sqrt N$) towards the Heisenberg limit ($1/N$).
+~ Fragile things make great alarms. Qubits feel tiny changes in magnetic fields, time and gravity.
+x quantum sensing is far in the future. Atomic clocks and some quantum sensors are already in use.
+Quantum sensors use the fragility of quantum states as a strength: anything that disturbs them can be measured very precisely. Examples include atomic clocks, magnetometers, gravimeters and gravitational-wave detectors that use "squeezed" light.
+$$\Delta\varphi_{\text{SQL}}\sim\frac{1}{\sqrt N},\qquad \Delta\varphi_{\text{Heisenberg}}\sim\frac{1}{N}$$
+## Ramsey interferometry for sensing
+Ramsey interferometry is the workhorse of quantum sensors and atomic clocks. Put a qubit into $\ket{+}$ with a gate, let it sit for time $t$ so that a tiny field adds a phase $\varphi=\omega t$, then apply the gate again and measure. The probability of 0 swings like $\cos^2(\varphi/2)$, so even tiny changes in ω become measurable.
+This is the same "H → phase → H" interference shown in the gates chapter visual, used as a measuring tool.
+$$P(0)=\cos^2\!\left(\frac{\omega t}{2}\right),\qquad \delta\omega\sim\frac{1}{t\sqrt{N}}$$
+~ Like two runners starting together on a circular track: a tiny difference in speed shows up as a growing gap after many laps.
+x longer waiting always means better sensing. Decoherence (T2) limits how long you can wait before the phase is lost.
+## Scaling to millions of qubits
+Useful fault-tolerant machines are estimated to need around a million physical qubits or more for problems like breaking RSA. Challenges: wiring, cooling, fabrication yield, fast real-time decoding of errors, and linking modules with quantum interconnects. Better codes (like qLDPC codes) aim to reduce the overhead.
+~ Going from a village to a city: you need roads, power and plumbing (wiring, cooling, control), not just more houses.
+x we only need more qubits. We need better qubits, faster decoding and modular links too.
+Going from hundreds to millions of qubits is not just "make more". It needs better error rates, error correction, more wiring and cooling, fast classical decoders, and probably linking many smaller modules together with photons. Each of these is a major engineering challenge.
+k Rough estimates for breaking RSA-2048: on the order of a million physical qubits.
+k Modular designs link many chips with quantum interconnects.
+## Deutsch 1985: the universal quantum computer
+In **1985**, David Deutsch described a **universal quantum computer**: one machine that, in principle, can simulate any physical process. He also gave an early example (now "Deutsch's algorithm") where a quantum computer needs fewer questions than any classical one. This turned Feynman's idea into a clear model of computing.
+
+## Industry, investment and the market
+Quantum computing is funded by governments, big tech companies (such as IBM, Google, Microsoft, Amazon) and many start-ups. Billions of dollars have been invested worldwide, and several companies are publicly listed.
+Be careful with hype: market forecasts vary widely, and useful large-scale machines are still in development. Good signs to watch are verified results such as error-correction milestones, not just qubit counts.
+## National programs, ethics and policy
+Many countries run national quantum programs, for example the US **National Quantum Initiative** (2018), the EU **Quantum Flagship** (2018, about €1 billion), the UK's **National Quantum Strategy** (2023), and India's **National Quantum Mission** (approved in 2023, about ₹6,000 crore up to 2030–31).
+Ethical and policy questions include: protecting today's encrypted data from future attacks ("harvest now, decrypt later"), export controls, fair access for all countries, workforce training, and honest communication instead of hype.
+## Quantum thermodynamics
+**Quantum thermodynamics** studies heat, work and energy for tiny quantum systems. One link to computing is **Landauer's principle**: erasing one bit of information must give off at least a tiny amount of heat (kT·ln 2). Reversible quantum gates avoid erasing, but resetting qubits and correcting errors does cost energy.
+## Quantum gravity and holography
+Physics still has no complete theory joining quantum mechanics with gravity. Surprisingly, quantum information ideas help. The **holographic principle** (AdS/CFT, proposed by Juan Maldacena in 1997) suggests a universe with gravity can be described by a quantum system on its boundary. Ideas such as "ER = EPR" (Maldacena and Susskind, 2013) link entanglement to the shape of space-time.
+Some quantum computers now run small "toy model" experiments inspired by this, but these do not create real wormholes.
+## Open problems in quantum foundations
+Big questions remain: How does measurement really work? Is the wavefunction real or just knowledge? Can quantum effects survive in bigger and bigger objects? Researchers test these with ever larger superpositions (molecules, tiny crystals) and new experiments.
+! The road ahead: better qubits, better codes, and modular architectures, aimed at simulation, chemistry and other problems with real structure.
+@ scale
+? Measurement-based QC computes by... ;; Applying only CNOTs ;; *Measuring a cluster state step by step ;; Annealing ;; Cloning qubits || The entangled resource is consumed by measurements.
+? The Heisenberg limit scales precision as... ;; 1/√N ;; *1/N ;; N ;; log N || Entanglement can beat the standard quantum limit $1/\sqrt N$.

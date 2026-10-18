@@ -1,0 +1,106 @@
+# algo | Quantum algorithms | 🚀
+> An algorithm is a recipe: a list of steps that solves a problem. Here are the quantum recipes that beat normal computers, from small examples to big ones like breaking codes and searching.
+" Nature isn't classical, dammit, and if you want to make a simulation of nature, you'd better make it quantum mechanical. | Richard Feynman, Simulating Physics with Computers (1982)
+## How quantum algorithms win (the simple idea)
+A quantum algorithm uses superposition to work on many possibilities at once. But measurement gives only one answer. So the trick is **interference**: the algorithm makes wrong answers cancel out and right answers grow stronger, like waves in water.
+~ Two water waves can add up to a big wave or cancel to flat water. Quantum algorithms arrange things so the right answer gets the big wave.
+## Grover's search, step by step
+**Problem:** find one marked item in an unsorted list of N items. A normal computer checks items one by one, about N/2 tries on average.
+**Steps:** 1) Put all items into an equal superposition with H gates. 2) The **oracle** (a checker) flips the sign of the marked item. 3) The **diffusion** step reflects all amplitudes around their average. This makes the marked one bigger. 4) Repeat steps 2 and 3 about √N times. 5) Measure. You most likely get the marked item.
+**Example:** with 4 items, one round is enough to find the answer with certainty. With 1,000,000 items you need about 800 rounds instead of about 500,000 checks.
+## Shor's factoring, in short
+**Problem:** split a big number into its prime factors, for example 15 = 3 × 5. For huge numbers this is very hard for normal computers, and much online security depends on it.
+**Idea:** Shor turned factoring into finding a **period** (how often a pattern repeats). Example for 15: take 7, 7², 7³, 7⁴... and keep only the remainder after dividing by 15: 7, 4, 13, 1, 7, 4... The pattern repeats every 4 steps. From this period, simple maths gives the factors 3 and 5.
+A quantum computer finds the period fast using the **quantum Fourier transform**, which is great at spotting repeating patterns.
+## Deutsch's algorithm
+Given a function $f$ from 1 bit to 1 bit, is it constant ($f(0)=f(1)$) or balanced? Classically you must check both inputs. Deutsch's algorithm answers with one query, using superposition and interference. It's the "hello world" of quantum speedups.
+~ Checking if a coin is fair (different sides) or fake (same both sides) by looking at both sides at once, in one glance.
+x it solves a useful problem. It's a teaching example that shows the idea of a quantum speedup.
+It was the first proof that a quantum computer can beat a classical one at something, even if the task is tiny. The trick is "phase kickback": the helper qubit in state $|-\rangle$ makes the oracle write $f(x)$ into a sign, and signs can interfere.
+$$U_f|x\rangle|-\rangle=(-1)^{f(x)}|x\rangle|-\rangle,\qquad f(0)\oplus f(1)\ \text{in 1 query}$$
+## Deutsch–Jozsa
+The $n$-bit version: $f$ is promised to be either constant or balanced (half 0s, half 1s). Classically, a guaranteed answer can need $2^{n-1}+1$ queries; the quantum algorithm needs one. Apply H to all, query, apply H to all, measure: all zeros means constant.
+~ Like checking if a huge box of balls is all one colour or exactly half-and-half, with one magic look instead of opening half the box.
+x it beats every classical method. A random classical guess is right with high probability using a few checks; the quantum win is for a 100% guarantee.
+The final amplitude of $|00\ldots0\rangle$ is the average of all the signs $(-1)^{f(x)}$. If $f$ is constant, every sign is the same, so the average is ±1. If $f$ is balanced, half the signs are + and half are −, so the average is exactly 0. One query, and the answer is certain.
+$$\text{amp}(0\ldots0)=\frac{1}{2^n}\sum_x(-1)^{f(x)}$$
+## Bernstein–Vazirani
+A hidden string $s$ is inside $f(x)=s\cdot x \pmod 2$. Classically you need $n$ queries to learn $s$ bit by bit. Quantumly you get all of $s$ in a single query.
+How? Put all inputs in superposition with H gates, call the oracle once so each input gets the sign $(-1)^{s\cdot x}$, then apply H gates again. Interference makes the register land exactly on $|s\rangle$. It is the same circuit shape as Deutsch–Jozsa, with a different oracle.
+~ A safe with a secret code: classically you test one digit at a time, quantumly you learn all digits in one go.
+x it can crack real passwords. It only works for this special kind of hidden-string function.
+$$H^{\otimes n}\,U_f\,H^{\otimes n}|0\rangle^{\otimes n}=|s\rangle\quad\text{for } f(x)=s\cdot x$$
+## Simon's algorithm
+$f$ has a hidden "period" $s$: $f(x)=f(y)$ exactly when $y=x\oplus s$. Quantum needs about $n$ queries; classical needs exponentially many. Simon's idea directly inspired Shor's algorithm.
+Each run of the circuit gives a random string $y$ with $y\cdot s=0 \pmod 2$. After about $n$ different runs you solve these simple equations to find $s$. This "find a hidden period with interference" idea is the heart of Shor's factoring algorithm.
+~ Finding a hidden repeating pattern in a giant table, much faster than checking pairs.
+x it's only of historical interest. It shows an exponential separation in the query model and led to Shor.
+$$f(x)=f(y)\iff y=x\oplus s,\qquad \text{each run gives } y \text{ with } y\cdot s=0$$
+## Quantum Fourier Transform (QFT)
+The QFT is the quantum version of the discrete Fourier transform. It turns a basis state $|k\rangle$ into a superposition whose phases rotate at speed $k$. It uses only about $n^2$ gates on $n$ qubits, while the classical FFT on $2^n$ numbers needs about $n2^n$ steps. It is the key step for finding periods.
+$$\mathrm{QFT}|k\rangle=\frac{1}{\sqrt N}\sum_{j=0}^{N-1}e^{2\pi i jk/N}|j\rangle$$
+~ A music app that hears a song and shows which notes (frequencies) are in it. QFT does this for quantum amplitudes.
+x QFT gives you all the Fourier numbers. You only get a sample by measuring, so it's useful mainly inside bigger algorithms.
+The QFT turns a "pattern that repeats" into a "sharp peak". If the input repeats every $r$ steps, the output has peaks at multiples of $N/r$. That is how Shor's algorithm reads off a period. Note: the QFT does not let you read all Fourier coefficients; you only get one sample per run.
+## Phase estimation
+If $U|u\rangle=e^{2\pi i\phi}|u\rangle$, phase estimation finds $\phi$ to $t$ bits of precision. It uses controlled-$U^{2^k}$ gates and an inverse QFT. It's a building block for Shor, HHL and quantum chemistry.
+~ Like timing how fast a wheel spins by watching it at 1, 2, 4, 8 seconds and combining the clues.
+x more precision is free. Each extra bit doubles how long the controlled gates must run.
+Phase estimation answers: "this gate $U$ turns $|u\rangle$ by some angle; what is that angle?" It uses extra "counting" qubits, controlled-$U$ gates, and an inverse QFT. With $t$ counting qubits you learn the phase to about $t$ binary digits. It is a building block of Shor's algorithm, quantum chemistry and HHL.
+$$U|u\rangle=e^{2\pi i\theta}|u\rangle,\qquad \text{accuracy}\approx 2^{-t}$$
+## Shor's algorithm
+Shor factors large numbers in polynomial time by turning factoring into period finding: find $r$ with $a^r \equiv 1 \pmod N$. The best known classical methods take super-polynomial time. Running it on numbers used in RSA would need a large fault-tolerant quantum computer, which doesn't exist yet.
+~ Factoring is like finding the two keys that make a lock. Shor finds the lock's hidden rhythm (period), and the rhythm reveals the keys.
+x today's quantum computers can break RSA. They can't; it would need a large fault-tolerant machine.
+The steps: (1) pick a random $a$; (2) use the quantum computer to find the period $r$ of $a^x \bmod N$; (3) if $r$ is even, compute $\gcd(a^{r/2}\pm1, N)$, which usually gives a factor. Only step 2 needs quantum. Breaking real 2048-bit RSA would need millions of physical qubits with error correction.
+$$a^r\equiv1\ (\mathrm{mod}\ N),\qquad p,q=\gcd\!\left(a^{r/2}\pm1,\,N\right)$$
+## Grover's search and amplitude amplification
+Grover finds a marked item among $N$ in about $\frac{\pi}{4}\sqrt N$ steps instead of about $N$. Each step flips the sign of the marked item (oracle), then reflects all amplitudes about their average (diffusion), so the marked amplitude grows. Amplitude amplification is the general version. The speedup is quadratic, not exponential.
+$$k_{\text{opt}}\approx\tfrac{\pi}{4}\sqrt{N}$$
+~ Finding one name in an unsorted phone book. Instead of reading every page, Grover's trick makes the right page "glow" a bit more each round.
+x more rounds is always better. After the best number, the chance goes down again.
+Each Grover step is two reflections, which together make a small rotation toward the answer. After about $\frac{\pi}{4}\sqrt{N}$ steps you are very close. Going further rotates past the target, so stopping at the right time matters. The quadratic speedup is proven optimal for unstructured search.
+$$\sin\theta=\frac{1}{\sqrt N},\qquad P_k=\sin^2\big((2k+1)\theta\big),\qquad k_{\text{best}}\approx\frac{\pi}{4}\sqrt N$$
+## Amplitude estimation
+Amplitude estimation combines Grover-style amplification with phase estimation to measure a probability $a$ precisely. Classical sampling needs about $1/\varepsilon^2$ samples for accuracy ε; amplitude estimation needs only about $1/\varepsilon$ uses of the circuit. That quadratic saving is the basis of proposed quantum speedups for Monte Carlo methods in finance and science.
+$$\text{classical: } N\sim\frac{1}{\varepsilon^2},\qquad \text{quantum: } N\sim\frac{1}{\varepsilon}$$
+~ Instead of tossing a coin a million times to learn its bias, you "listen" to how it wobbles and learn the bias much faster.
+x amplitude estimation gives exponential speedups. It's quadratic, and it needs deep, error-corrected circuits.
+## Quantum walks
+Quantum versions of random walks, where the walker is in superposition over positions. They spread faster than classical walks (distance $\propto t$ instead of $\sqrt t$) and give speedups for some graph problems.
+~ A drunk walker wanders slowly. A quantum walker spreads like a wave in many directions at once.
+x quantum walks are random. Their spread is set by interference and is fully predictable.
+A classical random walk spreads out slowly: after $t$ steps you are typically about $\sqrt t$ away. A quantum walk spreads about $t$ away, because the paths interfere. This faster spreading gives speedups for some graph and search problems.
+k Classical walk spread ∝ $\sqrt{t}$; quantum walk spread ∝ $t$.
+k Quantum walks are universal: any quantum computation can be written as one.
+## HHL (linear systems)
+HHL prepares a quantum state proportional to the solution of $A\vec x=\vec b$. For sparse, well-conditioned matrices it can be exponentially faster in $n$. The catch: you get a quantum state, not the full list of numbers, and loading the data can kill the speedup.
+~ Like a calculator that gives you a sealed box with the answer inside. You can ask questions about it, but not print the whole answer quickly.
+x HHL speeds up all of maths and AI. The conditions are strict, and many claimed speedups disappeared with clever classical methods.
+HHL solves $A\vec x=\vec b$ and outputs a quantum state proportional to $\vec x$. The catch: it needs the data loaded efficiently, $A$ must be sparse and well-behaved, and you only get the answer as a quantum state, not a list of numbers. When these conditions fail, the speedup can disappear.
+$$A|x\rangle=|b\rangle\ \Rightarrow\ |x\rangle\propto A^{-1}|b\rangle,\qquad \text{cost}\sim \mathrm{poly}(\log N,\kappa)$$
+## Deutsch–Jozsa, step by step
+**Problem:** a hidden function f takes n bits and gives 0 or 1. You are promised it is either **constant** (same answer for every input) or **balanced** (0 for exactly half the inputs, 1 for the other half). Which is it?
+A normal computer may need to check more than half of all inputs to be sure: 2ⁿ⁻¹ + 1 checks. A quantum computer needs just **one**.
+**Steps:** 1) Start with n qubits at |0⟩ and one helper qubit at |1⟩. 2) Apply H to every qubit, making an equal mix of all inputs. 3) Ask the function once (the **oracle**). It puts a − sign on inputs where f = 1 (this trick is called **phase kickback**). 4) Apply H to the n input qubits again. 5) Measure them.
+**Result:** if you see all zeros, f is constant. Anything else means balanced. The signs interfere: for a constant f they all agree and pile up on 00…0; for a balanced f they cancel exactly there.
+**Example with n = 1:** f(0) = 0 and f(1) = 1 is balanced. After the steps you measure 1, not 0, so you know it is balanced from one question.
+x This is a teaching example. It is not a useful speed-up in real life, because a random classical guesser can be almost sure with only a few checks.
+## Bernstein–Vazirani: finding a hidden number in one go
+A hidden function computes the "dot product" of your input with a secret string s (bit by bit, adding mod 2). A normal computer needs n questions to find s (one per bit). The **Bernstein–Vazirani** algorithm (1993) finds all of s with **one** question.
+Steps: H on all qubits, ask the oracle once, H on all again, measure. The result is s. It works by phase kickback and interference, like Deutsch–Jozsa.
+## Quantum counting
+**Quantum counting** (Brassard, Høyer and Tapp, 1998) estimates **how many** items are marked in a list, instead of finding one. It combines Grover's step with phase estimation, and needs about √N steps for a good estimate.
+It is useful when you don't know how many solutions there are, which tells Grover how many rounds to run.
+## The hidden subgroup problem: the big pattern behind speed-ups
+Many fast quantum algorithms solve the same kind of puzzle: a function repeats in a hidden pattern (a "subgroup"), and you must find the pattern. This is the **hidden subgroup problem**.
+Shor's factoring (finding a period) and Simon's algorithm are examples, and are solved fast for "commutative" groups. For some other groups (linked to graph isomorphism and some lattice problems) no fast quantum method is known, which is one reason lattice-based cryptography is believed to be quantum-safe.
+! Speedups come from structure: periodicity (Shor, Simon), hidden strings (BV), or amplitude amplification (Grover). There's no general "try all answers at once".
+@ grover
+@ qft
+@ dj
+@ shor
+? For $a=7$ and $N=15$, what is the period $r$ of $7^x \bmod 15$? ;; 2 ;; 3 ;; *4 ;; 15 || $7,4,13,1$ then it repeats, so $r=4$ and $\gcd(7^2\pm1,15)=3,5$.
+? Grover's algorithm on N items needs about how many queries? ;; log N ;; *√N ;; N/2 ;; N² || The speedup is quadratic.
+? Shor's algorithm reduces factoring to... ;; Sorting ;; *Period finding ;; Graph colouring ;; Search || Finding the period of $a^x \bmod N$ gives the factors.
+? What is the key subroutine in Shor's algorithm? ;; Grover search ;; *Quantum Fourier Transform ;; Teleportation ;; VQE || QFT extracts the period.

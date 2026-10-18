@@ -1,0 +1,62 @@
+# programming | Quantum programming | 💻
+> You can write quantum programs today in Python and other languages, run them on simulators, and send them to real cloud hardware.
+" One of the miseries of life is that everybody names things a little bit wrong. | Richard Feynman, Computer Heuristics Lecture (1985)
+## Qiskit (IBM)
+A Python library to build circuits, simulate them and run them on IBM hardware. You create a `QuantumCircuit`, add gates, measure, then run it with a simulator or backend.
+~ Like a toolkit with a drawing board for circuits plus a button to run them.
+x you need a quantum computer at home. Qiskit runs on your laptop and can send jobs to the cloud.
+A typical Qiskit workflow: build a QuantumCircuit, add gates, transpile it for a backend (a simulator or a real device), run it, and read the counts. Qiskit is written in Python and is one of the most widely used quantum SDKs, with a large set of tutorials.
+k Workflow: build circuit → transpile → run → read counts.
+k Bit order: Qiskit prints results with qubit 0 on the right.
+## Cirq (Google)
+Google's Python framework, designed with near-term hardware details in mind (device layouts, moments). Circuits are made from operations on `cirq.LineQubit` or grid qubits.
+~ A toolkit designed with the details of real chips in mind.
+x each framework only works with its own company's hardware. Many can target several back ends.
+Cirq makes the hardware visible: qubits can be placed on a grid that matches a real chip, and circuits are built from "moments" (time steps). This is useful when you care about exactly which gates run at the same time and where.
+k Circuits are lists of "moments" (parallel layers of gates).
+k Good fit for research on near-term hardware.
+## PennyLane
+A library from Xanadu focused on quantum machine learning and differentiable programming. Circuits are Python functions ("QNodes") that can be trained with PyTorch, JAX or TensorFlow.
+~ Like a quantum add-on for machine-learning libraries, so circuits can be trained like neural networks.
+x it's only for photonic hardware. It works with many devices and simulators.
+PennyLane treats quantum circuits like functions you can differentiate, so they plug into machine-learning tools like PyTorch and JAX. It computes gradients of circuits using rules like the "parameter-shift rule", which runs the circuit at shifted angles.
+$$\frac{\partial\langle E\rangle}{\partial\theta}=\frac{\langle E\rangle_{\theta+\pi/2}-\langle E\rangle_{\theta-\pi/2}}{2}$$
+## Q# (Microsoft)
+A dedicated quantum programming language with the Azure Quantum Development Kit. It's strong for writing larger algorithms and estimating the resources they would need.
+~ A language made just for quantum programs, like a special tool for a special job.
+x Q# is just Python. It's its own language, though it works with Python too.
+Q# is a programming language designed for quantum computing, with types like Qubit and Result. It focuses on writing larger algorithms and estimating the resources (qubits, time) they would need on future fault-tolerant machines.
+k Separate language with quantum-specific types.
+k Strong tools for resource estimation.
+## Simulators vs real hardware
+Simulators are exact and noise-free (or add a noise model), but need memory that doubles with each qubit, so roughly 30–50 qubits is the practical limit for full state vectors. Real hardware is noisy and has queues, but it's the real thing.
+~ A flight simulator is safe and perfect; a real plane has wind and bumps.
+x simulators can copy any quantum computer. Memory doubles with each qubit, so big circuits are out of reach.
+A "statevector" simulator stores all $2^n$ amplitudes, so memory doubles with each qubit: about 30 qubits fit on a laptop, about 50 is near the limit of supercomputers. Real hardware has no such limit, but it is noisy. Always test on a simulator first, then on hardware.
+$$\text{memory}=16\times2^n\ \text{bytes (double-precision complex)}$$
+## Transpiling and circuit optimisation
+Hardware only supports certain native gates and certain qubit connections. The transpiler rewrites your circuit: it converts gates, maps qubits to the chip, inserts SWAPs, and simplifies to reduce depth and errors.
+~ Like Google Maps rerouting you because some roads (qubit connections) don't exist on this map.
+x the transpiled circuit is the same size. It is often longer because of extra SWAPs.
+The transpiler rewrites your circuit for a specific chip: it converts gates to the native set, maps your qubits onto physical qubits, adds SWAPs where qubits aren't connected, and simplifies the result. Fewer gates and lower depth mean less noise, so good transpiling directly improves results.
+k Steps: decompose → map/route (add SWAPs) → optimise.
+k Two-qubit gate count is usually the main cost to reduce.
+## OpenQASM: the assembly language of quantum
+**OpenQASM** ("Open Quantum Assembly Language") is a simple text format for quantum circuits, created by IBM and now open. Version 3 added loops, conditions and timing.
+Example of a Bell state:
+H <pre class="mono" style="overflow-x:auto;padding:12px;border-radius:10px;background:rgba(2,6,17,.6)">OPENQASM 3.0;<br>include "stdgates.inc";<br>qubit[2] q;<br>bit[2] c;<br>h q[0];<br>cx q[0], q[1];<br>c = measure q;</pre>
+Many tools can read and write it, so it is a common way to share circuits.
+## The quantum software stack
+From your idea to the chip, a program passes through layers: **1.** an app or algorithm library, **2.** a programming framework (Qiskit, Cirq, PennyLane, etc.), **3.** a **transpiler/compiler** that rewrites circuits for one device, **4.** **pulse-level control**, which turns gates into microwave or laser pulses, **5.** the hardware and its **error correction / mitigation**.
+## From your circuit to the chip: transpiling
+**Intuition.** The circuit you write uses friendly gates on any pair of qubits. A real chip only has a few native gates and only some qubit pairs are wired together, so your circuit must be translated.
+**Core idea.** A **transpiler** (compiler) does four jobs: picks which physical qubits to use (**layout**), adds SWAP gates so that two-qubit gates only act on connected pairs (**routing**), rewrites gates into the chip's native set (for example √X, Rz and CZ or ECR), and **optimises** by cancelling or merging gates. Rz gates are often "virtual": done for free by shifting the phase of later pulses.
+~ Like translating a recipe into the exact tools of one kitchen, and reordering the steps so you never walk back and forth.
+x The circuit you write is what runs on the chip. It is rewritten, and its depth can grow a lot.
+**Research level.** Optimal layout and routing are NP-hard in general, so tools use heuristics (Qiskit's SABRE, for example). Each SWAP costs three CNOTs, so connectivity strongly affects how deep, and therefore how noisy, a circuit becomes. Compilers also choose qubits with the lowest error rates from the latest calibration data, and add dynamical decoupling pulses to idle qubits. For fault-tolerant machines, compilers instead count logical operations, T gates and magic-state factory time.
+Sources: Li, Ding & Xie, SABRE (ASPLOS 2019, arXiv:1809.02573); McKay et al., Efficient Z gates (PRA 2017, arXiv:1612.00858); Qiskit transpiler documentation.
+k A SWAP = 3 CNOTs; connectivity drives circuit depth and noise.
+! Write circuits in Python, test on a simulator, transpile to the device, and remember that real results are noisy samples.
+@ code
+? Why are full simulators limited to roughly 30–50 qubits? ;; Licences ;; *Memory doubles with every qubit ;; Speed of light ;; Python is slow || A state vector has $2^n$ amplitudes.
+? What does a transpiler do? ;; Translates English to code ;; *Rewrites circuits for a device's gates and connections ;; Encrypts circuits ;; Measures qubits || It maps and optimises circuits for hardware.

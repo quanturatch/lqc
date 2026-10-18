@@ -1,0 +1,118 @@
+# hw | Quantum hardware | 🔧
+> There are many ways to build a qubit. Each platform trades speed, quality, connectivity and how easy it is to scale.
+" For a successful technology, reality must take precedence over public relations, for nature cannot be fooled. | Richard Feynman, Challenger accident report (1986)
+## Spotlight: Google's Willow chip (December 2024)
+H <div class="spot"><div class="spot-h">⭐ Spotlight · Dec 2024</div><b>Willow</b> is a 105-qubit superconducting chip from Google Quantum AI.<ul><li><b>Errors went down as the code got bigger.</b> Growing the error-correcting code from size 3 to 5 to 7 roughly halved the error rate each step (a factor of about 2.14). This "below threshold" behaviour is what error correction needs to scale.</li><li><b>The protected qubit outlived its parts.</b> The logical qubit kept its information about 2.4 times longer than the best single physical qubit on the chip.</li><li><b>A record sampling task.</b> Google says Willow finished a random-circuit sampling task in about 5 minutes that would take a top supercomputer about 10<sup>25</sup> years. This task is a benchmark, not a useful calculation, and such estimates depend on the best classical methods known.</li></ul><small>Sources: Google Quantum AI, "Quantum error correction below the surface code threshold", Nature (published 9 Dec 2024); Willow spec sheet (Dec 2024).</small></div>
+Why it matters, simply: before Willow, adding more qubits for error correction often added more errors too. Willow showed the opposite trend: bigger codes, fewer errors. It is still far from a useful, large machine.
+## Superconducting qubits (transmons)
+Tiny circuits of superconducting metal with Josephson junctions, acting like artificial atoms. They are controlled with microwave pulses and have very fast gates (tens of nanoseconds). They need dilution refrigerators near 10–20 millikelvin and have shorter coherence times than atoms.
+~ Like tiny electrical guitar strings that ring at a set note, played by microwave "plucks".
+x superconducting means room temperature. They need to be colder than outer space.
+A transmon is a tiny electrical circuit made of superconducting metal and a "Josephson junction", which makes its energy levels uneven. The lowest two levels are used as $|0\rangle$ and $|1\rangle$. Gates are microwave pulses lasting tens of nanoseconds. The chips must be cooled to about 10–20 millikelvin, colder than outer space.
+$$\Delta E = h f_{01},\qquad f_{01}\sim 4\text{–}8\ \text{GHz}$$
+## Trapped ions
+Individual charged atoms held by electric fields in a vacuum and controlled with lasers. They have very long coherence and some of the highest gate fidelities, and any ion can interact with any other in a chain. Gates are slower, and scaling to many ions is a challenge.
+~ Atoms floating in an electric "bowl", poked gently with laser beams.
+x ions are slow so they lose. Their high accuracy can make up for slower gates.
+Each qubit is a single charged atom held in place by electric fields in a vacuum. Two internal energy levels store the qubit. Lasers or microwaves do the gates. All the ions are identical by nature, and they can interact through their shared motion, so connectivity is excellent. The trade-off is slower gates than superconducting chips.
+k Every ion of the same element is identical, so there is no manufacturing variation.
+k Gates are typically microseconds long, slower than superconducting nanosecond gates.
+## Photonic qubits
+Information is stored in particles of light (polarisation, path, or time bins). Photons travel easily and barely decohere, making them natural for communication. The hard part is making photons interact; approaches use measurement-based schemes and fusion.
+~ Light flashes carrying messages through a fibre, like a very special fibre-optic internet.
+x photonic computers need no cooling at all. The photons don't, but the best detectors often do.
+Photons (particles of light) can carry a qubit in their polarisation, path or arrival time. They barely interact with their surroundings, so they keep coherence well and travel far in optical fibre. The hard part is making two photons interact for two-qubit gates, so many designs use measurement and clever "fusion" of small entangled states.
+k Natural fit for communication: photons travel long distances in fibre.
+k Photon loss is the main error to fight.
+## Neutral atoms
+Uncharged atoms held in grids of laser "optical tweezers" that can be rearranged. Exciting atoms to Rydberg states makes them interact for 2-qubit gates. They can form large arrays and are flexible in layout.
+~ Atoms held by laser "tweezers", arranged like pieces on a board that you can move around.
+x they don't interact, so they can't make gates. Rydberg excitation makes them interact strongly.
+Uncharged atoms are held by focused laser beams called "optical tweezers", arranged in 2D or 3D patterns. To entangle them, atoms are briefly excited to large "Rydberg" states, where they strongly feel each other. Atoms can even be moved around during a computation, which gives flexible connectivity.
+k Hundreds of atoms can be trapped and rearranged in regular arrays.
+k Two-qubit gates use the Rydberg blockade effect.
+## Spin qubits
+Use the spin of single electrons (or nuclei) in silicon or quantum dots. They are extremely small and could use existing chip factories, which helps scaling. Making them uniform and controlling them precisely is still being worked on.
+~ The tiny "spin" of an electron acts like a mini compass needle that points up or down.
+x they can use any normal chip. They need very pure materials and special cold electronics.
+The qubit is the spin of a single electron (or hole) trapped in a tiny "quantum dot" in silicon or similar materials. Because they are made like normal computer chips, they could one day use existing chip factories. They are very small, which is great for packing millions together, but also makes wiring and control hard.
+k Spin up / spin down plays the role of |0⟩ / |1⟩.
+k Compatible with semiconductor manufacturing.
+## Topological qubits (Majorana)
+The idea: store information non-locally in exotic quasiparticles (like Majorana zero modes), so local noise can't easily damage it. Braiding them would perform gates. This approach is still at an early, experimental stage.
+~ Like a knot in a rope: wiggling the rope doesn't undo the knot. Information stored in the knot is safe from small shakes.
+x topological qubits are already working at scale. They are still in early research.
+The idea is to store information in the overall "shape" of a system, not in one small place. Local noise can't easily change that shape, so errors should be naturally rare. Majorana zero modes are one proposed way to do this. Building and confirming them is very hard, and this approach is still at an early research stage.
+k Protection comes from non-local storage of information.
+k Gates come from "braiding" exotic quasiparticles around each other.
+## NV centres in diamond
+A nitrogen atom next to a missing carbon atom in diamond traps an electron spin that can be controlled with light and microwaves, even at room temperature. They are mainly used for quantum sensing and network experiments.
+~ A tiny flaw in a diamond acts like a super-sensitive compass.
+x diamonds make good big quantum computers. NV centres are mostly used for sensing and networking.
+An NV centre is a defect in diamond: a nitrogen atom next to a missing carbon atom. Its electron spin can be controlled with lasers and microwaves, even at room temperature. NV centres are especially good as quantum sensors, measuring tiny magnetic fields, for example inside living cells.
+k Works at room temperature, unlike most qubits.
+k Leading platform for nanoscale magnetic sensing.
+## Control, readout and cryogenics
+Qubits are steered by carefully shaped microwave or laser pulses and read out with resonators, fluorescence or charge sensors. Many platforms need extreme cold or ultra-high vacuum. Wiring and control electronics become a major engineering problem as qubit counts grow.
+~ Like a huge orchestra: every instrument needs its own perfectly timed signal and a microphone to hear it.
+x the qubit chip is the hard part. Wiring, cooling and control electronics are just as big a challenge.
+A quantum computer is mostly classical equipment: fridges, lasers, microwave generators, fast electronics and software. Each qubit needs control lines, and the heat and space they take is a major barrier to scaling. Readout must be fast and accurate, because a wrong measurement is just another error.
+k Dilution refrigerators reach about 10 mK for superconducting and spin qubits.
+k Fast, accurate readout is essential for error correction.
+## Performance metrics
+Coherence time ($T_1$, $T_2$) is how long qubits stay quantum. Gate fidelity is how accurately gates work (for example 99.9% means about 1 error per 1000 gates). Quantum volume is a single-number benchmark combining qubit count, connectivity and error rates.
+~ Like judging a car by top speed, fuel use and reliability, not just one number.
+x more qubits always means a better computer. Quality and connectivity matter just as much.
+No single number tells you how good a quantum computer is. You need to know how many qubits there are, how accurate the gates and measurements are, how long the qubits last (T1, T2), how they are connected, and how fast operations run. Error rates per gate are often the most important.
+$$\text{error rate}=1-F,\qquad \text{useful depth}\sim\frac{1}{\text{error rate}}$$
+## Benchmarking: randomized benchmarking and quantum volume
+How do you measure a gate's quality? **Randomized benchmarking** runs long random sequences of Clifford gates that should multiply to "do nothing", then checks how often the qubit survives. The survival drops as the sequences get longer, and the speed of that drop gives the average error per gate.
+**Quantum volume** and similar whole-system tests run random circuits of growing size to see the biggest "square" circuit the machine can run well. They reflect qubit count, error rates and connectivity together.
+$$P_{\text{survive}}(m)\approx A\,p^{m}+B,\qquad r=\frac{(1-p)(d-1)}{d}\ \ (d=2\text{ for one qubit})$$
+~ Like testing a runner by timing laps of increasing length, rather than one short sprint.
+x a higher qubit count alone means a better machine. Benchmarks show that quality and connectivity matter just as much.
+## Annealing vs gate-based machines
+There are two main styles of quantum computer.
+**Gate-based** (also called "universal") machines run circuits of gates, like the ones in this guide. In principle they can run any quantum algorithm, including Shor and Grover. IBM, Google, Quantinuum, IonQ and others build these.
+**Quantum annealers** do one job: they look for low-energy answers to optimisation problems. You write your problem as an "energy landscape", the machine starts in an easy state and slowly changes to your problem, hoping to end in the lowest valley. D-Wave builds these with thousands of qubits.
+Simple comparison: annealers have more qubits but can only do this one kind of task, and it is still debated how much faster they are than good classical methods. Gate-based machines are more flexible but are harder to build at large size.
+~ An annealer is like shaking a tray of marbles so they settle into the lowest holes. A gate-based computer is like a programmable robot that can follow any recipe you write.
+## What qubits are made of: materials and chips
+A qubit is not a special particle you buy. It is any small physical system with two states we can control. Different companies build them from very different materials.
+**Superconducting qubits** (IBM, Google and others). A thin metal film, usually **aluminium**, **niobium** or **tantalum**, is patterned on a **silicon** or **sapphire** wafer, just like a computer chip. The key part is a **Josephson junction**: two layers of aluminium with an insulating oxide only about 1–2 nanometres thick between them. The chip sits in a copper box inside a **dilution refrigerator** at about 10 millikelvin (−273.14 °C), so the metal superconducts and heat does not disturb the qubit.
+H <figure class="stackfig"><svg viewBox="0 0 640 330" role="img" aria-label="Diagram of a superconducting qubit chip stack, from the dilution refrigerator down to the Josephson junction"><rect x="0" y="0" width="640" height="330" rx="14" fill="#06122a"/><g font-family="Inter,sans-serif" font-size="13" fill="#e6f2ff"> <rect x="20" y="20" width="250" height="290" rx="10" fill="none" stroke="#38bdf8" stroke-dasharray="5 4"/><text x="32" y="42" fill="#7dd3fc" font-weight="700">Dilution refrigerator</text><text x="32" y="60" fill="#b7c8e6" font-size="12">coldest stage ≈ 10 mK</text> <rect x="45" y="80" width="200" height="190" rx="8" fill="#0b2340" stroke="#b45309"/><text x="58" y="100" fill="#fcd34d">Copper sample box</text> <rect x="65" y="120" width="160" height="40" rx="4" fill="#123058" stroke="#93c5fd"/><text x="78" y="145">Chip: Si or sapphire</text> <rect x="65" y="112" width="160" height="8" fill="#22d3ee"/><text x="78" y="190" fill="#b7c8e6" font-size="12">metal film on top:</text><text x="78" y="208" fill="#b7c8e6" font-size="12">Al, Nb or Ta</text> <rect x="65" y="225" width="160" height="30" rx="4" fill="#0e7490" opacity=".6"/><text x="78" y="245" font-size="12">wiring + microwave lines</text> <line x1="225" y1="116" x2="330" y2="80" stroke="#22d3ee"/> <rect x="330" y="20" width="290" height="140" rx="10" fill="none" stroke="#22d3ee"/><text x="345" y="42" fill="#7dd3fc" font-weight="700">Zoom: one transmon qubit</text> <rect x="355" y="60" width="90" height="70" rx="6" fill="#22d3ee" opacity=".85"/><rect x="505" y="60" width="90" height="70" rx="6" fill="#22d3ee" opacity=".85"/><text x="365" y="100" fill="#020611" font-weight="700">metal pad</text><text x="515" y="100" fill="#020611" font-weight="700">metal pad</text> <line x1="445" y1="95" x2="470" y2="95" stroke="#fcd34d" stroke-width="3"/><line x1="480" y1="95" x2="505" y2="95" stroke="#fcd34d" stroke-width="3"/><rect x="470" y="84" width="10" height="22" fill="#fbbf24"/><text x="445" y="150" fill="#fcd34d" font-size="12">Josephson junction</text> <rect x="330" y="175" width="290" height="135" rx="10" fill="none" stroke="#fbbf24"/><text x="345" y="197" fill="#fcd34d" font-weight="700">Zoom: the junction</text> <rect x="355" y="212" width="240" height="22" fill="#22d3ee"/><text x="365" y="228" fill="#020611" font-size="12" font-weight="700">aluminium (superconductor)</text> <rect x="355" y="236" width="240" height="10" fill="#f8fafc"/><text x="600" y="245" fill="#b7c8e6" font-size="11" text-anchor="end"> </text> <rect x="355" y="248" width="240" height="22" fill="#22d3ee"/><text x="365" y="264" fill="#020611" font-size="12" font-weight="700">aluminium (superconductor)</text> <text x="355" y="292" fill="#b7c8e6" font-size="12">white layer: aluminium oxide, only ~1–2 nm thick</text></g></svg><figcaption>Simplified, not to scale. A superconducting qubit chip from the fridge down to its junction.</figcaption></figure>
+**Silicon spin qubits** (for example Intel and Diraq). One electron is trapped in a tiny device similar to a transistor, made from silicon (often purified silicon-28) or silicon–germanium. The qubit is the electron's **spin** (up or down). These also need very cold fridges, though often slightly warmer (around 1 kelvin is being explored).
+**Trapped ions** (Quantinuum, IonQ). Single charged atoms, such as ytterbium, calcium or barium, float in a vacuum held by electric fields from a chip-like electrode trap. Lasers or microwaves control them.
+**Neutral atoms** (QuEra, Pasqal, Atom Computing). Uncharged atoms, such as rubidium, caesium or strontium, are held in rows by focused laser beams called **optical tweezers**.
+**Photonic qubits** (PsiQuantum, Xanadu). The qubit is a particle of light. Chips made of silicon or silicon nitride guide the light through tiny channels called waveguides.
+**NV centres in diamond.** A nitrogen atom next to a missing carbon atom in diamond holds a spin that can be a qubit, even at room temperature. Today these are used more for super-sensitive sensors than for big computers.
+x "Qubits are made of silicon and nickel." Silicon is right: it is used as the chip base for superconducting qubits and for spin qubits. Nickel is not a standard qubit material (it is magnetic, which tends to disturb qubits). The common superconducting metals are **aluminium, niobium and tantalum**.
+k Superconducting qubit films: aluminium, niobium or tantalum on silicon or sapphire.
+k Josephson junction: aluminium / aluminium oxide / aluminium.
+k Operating temperature of superconducting chips: about 10 mK, in a dilution refrigerator.
+## Topological qubits (Majorana): promising but unproven
+**The idea.** Most qubits store information in one small, fragile thing, so any small disturbance can cause an error. A **topological qubit** would store information in the overall pattern (the **topology**) of a material, spread across space. A small local bump cannot change a global pattern, so the qubit would be naturally protected from many errors.
+**Majorana zero modes.** In theory, special states called **Majorana zero modes** can appear at the two ends of a very thin wire made of a semiconductor (such as indium arsenide) touching a superconductor (such as aluminium), in a magnetic field. One qubit is stored jointly in a pair of these end states, so disturbing just one end does not reveal or destroy the information.
+**Anyons and braiding.** Majorana zero modes are an example of **anyons**, particle-like states that can only exist in 2D or 1D systems. Moving anyons around each other, called **braiding**, changes the qubit in a way that depends only on the pattern of the moves, not on small wobbles. That is why braiding could give very reliable gates. (Braiding Majoranas alone cannot do every gate, so extra steps would still be needed.)
+~ Think of a knot in a rope. Shaking the rope does not undo the knot; only a big, deliberate change can. Topological qubits aim to store information like a knot.
+**Microsoft Majorana 1 (February 2025).** Microsoft announced a chip called **Majorana 1** and said it holds 8 topological qubits. It published a paper in *Nature* the same day. That paper showed fast, accurate measurements in indium arsenide–aluminium nanowire devices, but Nature's editors added a note that the results **do not prove** Majorana zero modes exist in the devices.
+**The debate.** Some physicists (for example Henry Legg) argued that the test Microsoft used to find the "topological phase" can give false positives. Microsoft says it stands by its results and presented more data at the APS March Meeting in 2025. As of 2026, many experts say a working topological qubit has not yet been clearly demonstrated. It is an important open question.
+x "Microsoft has proven topological qubits work." Not yet. The claim is promising but still disputed.
+## The DiVincenzo criteria: what makes a good qubit?
+In **2000**, David DiVincenzo listed what any quantum computer needs. In simple words:
+1. Qubits you can **scale** up in number. 2. You can **reset** them to a starting state. 3. They stay quantum long enough (long **coherence**). 4. A complete set of **gates**. 5. You can **measure** each qubit. (For networks, two more: turn stationary qubits into flying ones, such as photons, and send them reliably.)
+H <div class="dv6" id="dv6"><label>Compare a platform <select class="pf"><option value="sc">Superconducting</option><option value="ion">Trapped ions</option><option value="atom">Neutral atoms</option><option value="spin">Silicon spins</option><option value="ph">Photons</option></select></label><div class="out6" aria-live="polite"></div></div>
+## Continuous-variable and bosonic qubits
+Instead of two levels, some designs store information in a **light-like wave** with many levels, such as the light inside a superconducting box (a "cavity") or a pulse of laser light. These are **continuous-variable** or **bosonic** qubits.
+**Cat qubits** use two opposite wave states (named after Schrödinger's cat). They naturally resist bit flips, leaving mostly phase flips to correct; Alice & Bob and AWS (with its Ocelot chip, 2025) work on these. **GKP codes** store a qubit in a grid pattern of wave states. **Photonic** companies such as Xanadu use squeezed light.
+## Isotopically pure silicon-28
+Natural silicon contains about 4.7% silicon-29, whose atomic nuclei act like tiny magnets that disturb electron spin qubits. Purifying silicon to almost pure **silicon-28** (which has no nuclear spin) makes spin qubits keep their state much longer.
+## Lithography and nanofabrication
+Qubit chips are drawn with **lithography**: light (photolithography) for bigger features, and an electron beam (e-beam lithography) for the tiniest parts, like Josephson junctions. Spin-qubit chips can be made in the same kind of factories that make normal computer chips, which could help them scale.
+## Distributed and modular quantum computers
+One chip can only hold so many qubits. A **modular** design links several smaller quantum processors, usually with photons, so they work as one bigger machine. Entanglement is shared between modules and then used to run gates across them (via teleportation).
+Many companies (for example IBM and IonQ) and university labs are working on this, because it may be easier than building one giant chip.
+! There's no clear winner yet. Superconducting is fast, ions are precise, neutral atoms scale in arrays, photons travel, and spins are tiny.
+@ hw
+? Which platform typically needs millikelvin temperatures? ;; NV centres ;; *Superconducting qubits ;; Photonic only ;; None || Transmons need dilution refrigerators.
+? Which platform is famous for all-to-all connectivity within a chain? ;; *Trapped ions ;; Spin qubits ;; Transmons ;; NV centres || Ions in one trap share motional modes.

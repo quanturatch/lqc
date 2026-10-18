@@ -1,0 +1,15 @@
+# OS and editor junk
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+
+# Local Vercel link (created by the Vercel CLI)
+.vercel
+.codegraph
+connections.txt
+
+# Secrets and installed packages
+.env
+node_modules

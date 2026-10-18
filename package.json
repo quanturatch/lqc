@@ -1,0 +1,14 @@
+{
+  "name": "quantum-atlas",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server/dev.js"
+  },
+  "dependencies": {
+    "nodemailer": "^6.10.1",
+    "pg": "^8.16.3"
+  }
+}

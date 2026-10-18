@@ -1,0 +1,111 @@
+# qec | Errors & error correction | 🛡️
+> Qubits are fragile. Error correction spreads one "logical" qubit over many physical ones so errors can be found and fixed without looking at the data.
+" The first principle is that you must not fool yourself — and you are the easiest person to fool. | Richard Feynman, Cargo Cult Science (1974)
+## Decoherence: T1 and T2
+Decoherence is the loss of quantum behaviour through unwanted contact with the environment. $T_1$ (relaxation) is how long before $|1\rangle$ decays to $|0\rangle$. $T_2$ (dephasing) is how long the relative phase survives. Always $T_2\le 2T_1$.
+~ A spinning top slowly loses energy and falls (T1). A group of dancers slowly falls out of step (T2).
+x just cool it more and decoherence goes away. Cooling helps, but material defects and control noise also matter.
+T1 is "energy relaxation": an excited $|1\rangle$ falls back to $|0\rangle$. T2 is "dephasing": the phase between $|0\rangle$ and $|1\rangle$ gets scrambled. T2 is never longer than twice T1. To compute usefully, you must finish many gates well within these times.
+$$P_1(t)=P_1(0)\,e^{-t/T_1},\qquad |\rho_{01}(t)|=|\rho_{01}(0)|\,e^{-t/T_2},\qquad T_2\le 2T_1$$
+## Bit-flip and phase-flip errors
+A bit flip is an unwanted X ($|0\rangle\leftrightarrow|1\rangle$). A phase flip is an unwanted Z ($|+\rangle\leftrightarrow|-\rangle$), which has no classical equivalent. Fixing both X and Z errors is enough to fix any single-qubit error, because errors "digitise" when you measure syndromes.
+~ A bit flip is a typo that changes a letter. A phase flip is a change in tone of voice: same words, different meaning.
+x only bit flips matter. Phase flips are often the more common error and have no classical version.
+Any single-qubit error can be written as a mix of "no error", X (bit flip), Z (phase flip) and Y (both). So if a code can fix X and Z errors, it can fix every single-qubit error. This "discretisation of errors" is what makes quantum error correction possible at all.
+$$E=e_0I+e_1X+e_2Y+e_3Z$$
+## Depolarising noise
+With probability $p$, the qubit is replaced by the fully mixed state. On the Bloch sphere, the vector shrinks evenly towards the centre. It's a simple, common model for benchmarking.
+$$\mathcal{E}(\rho)=(1-p)\rho+p\,\tfrac{I}{2}$$
+~ Like a photo slowly fading to grey evenly in all colours.
+x depolarising noise is exactly what happens in real hardware. It's a simple model; real noise is often uneven.
+Depolarising noise is the "worst-case average" model: with probability $p$ the qubit is replaced by random junk. On the Bloch sphere, it shrinks the arrow evenly in every direction toward the centre. It is popular in simulations because it is simple and symmetric.
+## Amplitude damping
+Models energy loss: $|1\rangle$ decays to $|0\rangle$ with probability $\gamma$. On the Bloch sphere, everything drifts towards the north pole. This is the physics behind $T_1$.
+~ Like a ball rolling downhill: an excited qubit "rolls down" to |0⟩ and gives off energy.
+x it's the same as random flipping. It only goes one way: from |1⟩ to |0⟩.
+Amplitude damping is the T1 process: energy leaks out, so $|1\rangle$ decays to $|0\rangle$. On the Bloch sphere, the arrow is pulled toward the north pole. Unlike depolarising noise, it is not symmetric: it prefers $|0\rangle$.
+$$K_0=\begin{pmatrix}1&0\\0&\sqrt{1-\gamma}\end{pmatrix},\quad K_1=\begin{pmatrix}0&\sqrt\gamma\\0&0\end{pmatrix}$$
+## The 3-qubit bit-flip code
+Encode $\alpha|0\rangle+\beta|1\rangle \to \alpha|000\rangle+\beta|111\rangle$. If one qubit flips, measuring the parities $Z_1Z_2$ and $Z_2Z_3$ (the syndrome) says which one, without revealing $\alpha$ or $\beta$. Then you flip it back. It protects against one bit flip, but not phase flips.
+~ Like writing your message three times. If one copy has a typo, the majority vote fixes it.
+x you measure the qubits to vote. You measure only the parities, so the secret α and β stay hidden.
+The code measures two parities, $Z_1Z_2$ and $Z_2Z_3$, using helper qubits. These parities tell you which qubit flipped, but say nothing about $\alpha$ and $\beta$, so the superposition survives. It fixes any one bit flip, but cannot fix phase flips at all.
+$$\alpha|0\rangle+\beta|1\rangle\ \to\ \alpha|000\rangle+\beta|111\rangle$$
+## The 3-qubit phase-flip code
+A phase flip (Z error) turns $\ket{+}$ into $\ket{-}$. In the X basis that looks like a bit flip. So the phase-flip code is just the bit-flip code done in the X basis: encode $\ket{0}\to\ket{+++}$ and $\ket{1}\to\ket{---}$, and check parities with $X_1X_2$ and $X_2X_3$.
+Combining the bit-flip and phase-flip codes gives Shor's 9-qubit code, which handles both kinds of error.
+$$\alpha\ket{0}+\beta\ket{1}\ \to\ \alpha\ket{+++}+\beta\ket{---},\qquad \text{stabilisers: } X_1X_2,\ X_2X_3$$
+~ Same safety net, turned sideways: the code that catches falls forward is rotated to catch falls sideways.
+x a bit-flip code also fixes phase flips. It doesn't; you need the X-basis version, or a code that does both.
+## Shor's 9-qubit code
+Shor combined a 3-qubit phase-flip code with three 3-qubit bit-flip codes. The result, using 9 qubits, was the first code to correct any single-qubit error.
+~ A code inside a code: one layer guards against typos, another guards against tone changes.
+x 9 qubits is a lot, so it's useless. It was the proof that quantum error correction is possible at all.
+It works in two layers. First, a phase-flip code spreads the qubit over 3 blocks. Then each block is protected by a bit-flip code of 3 qubits. 3 × 3 = 9 qubits protect 1 logical qubit against any single-qubit error. It was the first code to do this (1995).
+$$|0_L\rangle=\tfrac{1}{2\sqrt2}(|000\rangle+|111\rangle)^{\otimes3},\quad |1_L\rangle=\tfrac{1}{2\sqrt2}(|000\rangle-|111\rangle)^{\otimes3}$$
+## Steane's 7-qubit code
+Built from the classical Hamming code, it encodes 1 logical qubit in 7 physical ones and corrects any single-qubit error. It's a CSS code, and many logical gates (like H and CNOT) can be applied "transversally", qubit by qubit.
+~ Like a classical error-correcting barcode, reused cleverly for quantum states.
+x fewer qubits always means a better code. Ease of doing gates matters too.
+Steane's code is built from a classical code called the [7,4] Hamming code. It uses only 7 qubits, and many gates (like H, S and CNOT) can be applied "transversally": qubit by qubit, so one error can't spread into many. Its name in code notation is [[7,1,3]].
+k [[n,k,d]] notation: n physical qubits, k logical qubits, distance d.
+k A distance-d code corrects up to ⌊(d−1)/2⌋ errors. Steane: d = 3, so 1 error.
+## The stabiliser formalism
+Instead of writing out huge state vectors, describe a code by the set of Pauli operators that leave it unchanged (its stabilisers). Measuring stabilisers gives the syndrome. Most practical codes are stabiliser codes.
+~ Instead of describing a whole painting pixel by pixel, you list the rules it follows ("symmetric", "blue on top").
+x stabiliser states are powerful. On their own, Clifford circuits can be simulated quickly on normal computers.
+Instead of writing long state vectors, you list a few Pauli operators that leave the code states unchanged. Measuring these "stabilisers" gives the error syndrome. For the 3-qubit code, the stabilisers are $Z_1Z_2$ and $Z_2Z_3$. Most practical codes, including surface codes, are stabiliser codes.
+$$S|\psi_L\rangle=+|\psi_L\rangle\ \ \text{for all stabilisers } S$$
+## Surface codes
+Qubits sit on a 2D grid, and only neighbours need to interact. Measuring small local checks (4-qubit stabilisers) finds errors. Surface codes tolerate relatively high error rates (around 1%), which makes them a leading choice for hardware. A bigger grid (distance $d$) gives stronger protection.
+~ Like a chessboard of guards: each guard checks only its four neighbours, yet together they protect the whole board.
+x surface codes are cheap. They need many physical qubits per logical qubit.
+Qubits sit on a 2D grid, and each check only involves 4 neighbours, which suits real chips. A distance-$d$ patch needs about $2d^2$ physical qubits. When the physical error rate is below about 1%, every increase in $d$ makes logical errors drop exponentially.
+$$p_L\approx 0.1\left(\frac{p}{p_{\text{th}}}\right)^{(d+1)/2},\qquad n\approx 2d^2-1$$
+## Decoders: turning syndromes into fixes
+Error correction measures many syndromes every round, perhaps millions per second. A **decoder** is the classical software (or hardware) that reads these syndrome patterns and decides the most likely errors to undo. It must be fast, or errors pile up while it thinks.
+Common surface-code decoders include "minimum-weight perfect matching" and "union-find". Machine-learning decoders are also being studied.
+k Decoders are classical algorithms running alongside the quantum chip.
+k They must keep up in real time, or a "backlog" of syndromes builds up.
+k Better decoders can lower the logical error rate for the same hardware.
+~ Like a detective at a crime scene: footprints (syndromes) don't show who did it, but the most likely story can be worked out quickly.
+x error correction happens automatically inside the qubits. It needs fast classical computing to interpret every round of measurements.
+## Logical vs physical qubits
+A physical qubit is real hardware and is noisy. A logical qubit is an encoded, protected qubit made from many physical ones. Useful large algorithms are usually counted in logical qubits, which may each need hundreds to thousands of physical qubits.
+~ Physical qubits are the bricks. A logical qubit is the strong wall built from many bricks.
+x a chip with 1000 qubits has 1000 useful qubits. It may hold only a few logical qubits once you add error correction.
+A physical qubit is one real device. A logical qubit is information spread across many physical qubits and protected by a code. Today, the ratio may be hundreds or thousands of physical qubits per good logical qubit. Reducing this "overhead" is a major research goal.
+k Logical error rate falls fast with code size, but only if physical errors are below threshold.
+k Useful large algorithms are estimated to need thousands of logical qubits.
+## The threshold theorem
+If the physical error rate is below a certain threshold, adding more qubits to the code makes the logical error rate drop exponentially. So arbitrarily long quantum computations become possible in principle, with only polylog overhead.
+$$p_L \sim \left(\frac{p}{p_{\text{th}}}\right)^{\lfloor (d+1)/2\rfloor}$$
+~ If your team fixes mistakes faster than they appear, a bigger team helps. If not, a bigger team just makes more mess.
+x any error rate can be fixed with enough qubits. You must first get below the threshold.
+The threshold theorem is the main reason people believe large quantum computers can be built. If each physical part fails less often than a certain threshold, you can stack error correction so that logical errors become as rare as you want. The cost is extra qubits and time, which grows only slowly (polylogarithmically) with the size of the computation.
+k Surface-code threshold is roughly 1% error per operation.
+k Below threshold: bigger codes help. Above threshold: bigger codes make things worse.
+## Magic state distillation
+Many codes make Clifford gates easy but not the T gate. The trick: prepare many noisy copies of a special "magic state", distil them into fewer, cleaner copies, then use them to perform T gates via teleportation. It's a big part of the cost of fault tolerance.
+~ Like purifying water: take lots of slightly dirty water and filter it into a smaller amount of very clean water.
+x T gates are cheap like other gates. In fault-tolerant machines, they are often the most expensive part.
+The cheap gates in many codes are Clifford gates, and those alone can be simulated classically. To get full quantum power you need a "non-Clifford" gate like T. Distillation takes many noisy copies of a special state and turns them into fewer, much cleaner copies, which are then used to apply T gates.
+$$|T\rangle=\frac{|0\rangle+e^{i\pi/4}|1\rangle}{\sqrt2},\qquad 15\to1\ \text{protocol: } p\to 35p^3$$
+## The repetition code, step by step
+The simplest code copies a bit: 0 → 000 and 1 → 111 (this is encoding, not cloning an unknown state; it uses CNOTs). To check for errors, we measure **parities**: "do qubits 1 and 2 agree?" and "do qubits 2 and 3 agree?". These checks never reveal the stored value.
+Example: a flip on qubit 3 gives "agree, disagree", which points to qubit 3, so we flip it back. A 3-qubit repetition code fixes one bit flip but not phase flips; real codes handle both.
+## The toric code and surface code
+The **toric code** (Alexei Kitaev, 1997) places qubits on a grid wrapped onto a doughnut shape. Small checks on each square and each corner detect errors. The information is stored in the overall loops around the doughnut, so local errors cannot change it unless they join into a long chain.
+The **surface code** is the flat version used on real chips (including Google's Willow). It only needs checks between neighbours, which suits 2D chips.
+## Magic state distillation
+Some gates (the "Clifford" gates like H, S and CNOT) are easy to protect in error-correcting codes. But Clifford gates alone cannot beat a normal computer. You also need a gate like **T**.
+The trick: prepare special **magic states**, many noisy copies, and "distil" a few clean ones (Bravyi and Kitaev, 2005). Then T gates are done using them. This costs many qubits, and newer methods such as "magic state cultivation" try to make it cheaper.
+## qLDPC codes: fewer qubits per protected qubit
+The surface code needs many physical qubits per logical qubit (often hundreds or more). **Quantum LDPC codes** ("low-density parity check") let each check touch only a few qubits but spread information more cleverly, so you can protect more logical qubits with fewer physical ones.
+Example: in 2024 IBM described a "bivariate bicycle" code that protects 12 logical qubits with 144 data qubits (plus helper qubits). The catch: qubits must connect over longer distances, not just to neighbours.
+! Measure the errors, not the data. Syndromes reveal which error happened without collapsing the encoded information.
+@ deco
+@ bitflip
+? Which time measures loss of relative phase? ;; T1 ;; *T2 ;; Gate time ;; Readout time || T2 is the dephasing time.
+? The 3-qubit repetition code protects against... ;; *One bit flip ;; One phase flip ;; Any error ;; Two bit flips || It only handles a single X error.
+? Below the threshold, a larger code distance makes logical errors... ;; Larger ;; *Smaller ;; Unchanged ;; Random || That's the threshold theorem.

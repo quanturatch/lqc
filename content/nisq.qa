@@ -1,0 +1,80 @@
+# nisq | Near-term (NISQ) computing | 🌱
+> NISQ means "Noisy Intermediate-Scale Quantum": today's devices with tens to a few thousand noisy qubits and no full error correction.
+" Quantum computers with 50-100 qubits may be able to perform tasks which surpass the capabilities of today's classical digital computers, but noise in quantum gates will limit the size of quantum circuits that can be executed reliably. | John Preskill, Quantum Computing in the NISQ era and beyond (2018)
+## The NISQ era
+John Preskill coined the term in 2018. NISQ devices are too noisy for long algorithms like Shor's, so researchers look for short, noise-tolerant algorithms that might still be useful.
+~ Like the early days of aeroplanes: they fly, but not far, and not yet for everyday use.
+x NISQ machines are useless. They are great for research and learning, even if clear practical wins are still being sought.
+NISQ machines have tens to a few thousand qubits but no full error correction. Noise limits how many gates you can run before the answer turns to random junk. Researchers try to find tasks that fit into this short "budget" of gates.
+k NISQ = Noisy Intermediate-Scale Quantum (term from 2018).
+k Without error correction, circuit depth is limited by noise.
+## The variational principle
+The variational principle says: the average energy of **any** trial state is never below the true ground-state energy. So if you lower the trial energy, you can only get closer to the truth from above. This is the reason VQE works.
+$$\bra{\psi(\theta)}H\ket{\psi(\theta)}\ \ge\ E_0\quad\text{for every } \theta$$
+~ Searching for the lowest point in a valley in fog: every spot you stand on is at or above the true bottom, so going downhill always helps.
+x a lower VQE energy can be below the true ground state. With exact measurements it can't. Noise and too few shots can make it look like it, which is a warning sign.
+## Variational Quantum Eigensolver (VQE)
+A hybrid loop: a quantum computer prepares a trial state with adjustable angles $\vec\theta$ and measures its energy; a classical optimiser updates $\vec\theta$ to lower it. By the variational principle, the result is always at or above the true ground energy. The main target is chemistry.
+$$E(\vec\theta)=\langle\psi(\vec\theta)|H|\psi(\vec\theta)\rangle\ \ge\ E_0$$
+~ Like tuning a radio: turn the knobs, listen, and keep turning until the signal is best (lowest energy).
+x VQE always finds the right answer. The optimiser can get stuck, and noise blurs the energy.
+VQE is a team effort. The quantum computer prepares a trial state using rotation gates with adjustable angles, and measures its energy. A classical computer then changes the angles to push the energy lower. Repeat until it stops improving. The final energy is an estimate of the molecule's ground state energy.
+## QAOA (optimisation)
+The Quantum Approximate Optimisation Algorithm alternates a "problem" layer and a "mixer" layer, each with a tunable angle. It targets combinatorial problems like MaxCut. More layers ($p$) can give better answers but need deeper circuits.
+~ Like shaking a bowl of marbles in a smart rhythm so they settle into the best holes.
+x QAOA beats classical solvers today. That hasn't been clearly shown for real problems.
+QAOA alternates two kinds of layers: one that "scores" bit strings using the problem's cost function, and one that "mixes" them. A classical optimiser tunes the angles of each layer. With more layers it can, in principle, do better, but whether it beats good classical methods on real problems is still unclear.
+$$|\gamma,\beta\rangle=\prod_{k=1}^{p}e^{-i\beta_k H_M}e^{-i\gamma_k H_C}|+\rangle^{\otimes n}$$
+## Quantum machine learning
+Uses parameterised circuits as models, or quantum kernels to compare data. It's an active research area; proven practical advantages on real data are still an open question, and issues like "barren plateaus" (flat training landscapes) make training hard.
+~ Using a quantum circuit as the "brain" of a learning model, with knobs that get trained.
+x quantum makes AI instantly better. Loading data and training are big hurdles.
+One idea is a "parameterised quantum circuit" used like a small neural network. Another is to use quantum states as features for a classifier. Big problems remain: loading classical data is slow, training can get stuck on flat "barren plateaus", and classical methods often match the results.
+k Most promising when the data itself is quantum (from sensors or experiments).
+k "Barren plateaus": gradients can vanish in large random circuits.
+## Error mitigation
+Not full correction, but tricks to reduce the effect of noise on averages: zero-noise extrapolation (run at amplified noise levels, then extrapolate back to zero), probabilistic error cancellation, and readout error correction. It costs extra runs instead of extra qubits.
+~ Like taking a photo in dim light at several noise levels, then working out what it would look like with no noise.
+x mitigation is the same as correction. It reduces noise effects on averages but doesn't scale to very long circuits.
+Error mitigation does not fix errors during the computation. Instead, it cleverly estimates what the noise-free answer would have been. For example, "zero-noise extrapolation" runs the circuit at several noise levels and extends the trend back to zero noise. The price is many more shots.
+$$E(0)\approx \text{extrapolate}\{E(\lambda_1),E(\lambda_2),\ldots\}$$
+## Quantum advantage & supremacy experiments
+"Quantum supremacy/advantage" means a quantum device doing a specific task that's infeasible for classical computers. Experiments with random circuit sampling (superconducting) and boson sampling (photonic) have claimed this. Classical algorithms have since challenged some of the claims, and these tasks aren't practically useful yet.
+~ Like a race on a special track built for one car. It proves the car is fast, but not that it's better for daily driving.
+x "supremacy" means quantum computers beat classical ones at everything. It was one special task.
+These experiments pick a task that is natural for the quantum device, such as sampling from a random circuit, and argue that classical computers would take far longer. The tasks are not useful by themselves. Classical algorithms have improved in response, so each claim is tested and debated.
+k Advantage claims depend on the best known classical method, which keeps improving.
+k Current demonstrations are mostly for sampling tasks, not practical problems.
+## Hybrid quantum–classical computing
+Today's best approach mixes both kinds of computer. A normal computer chooses settings, the quantum chip runs a short circuit, the results come back, and the normal computer adjusts the settings. This loop repeats many times.
+Most NISQ algorithms (VQE, QAOA, quantum machine learning) work this way.
+## Parameterised circuits (ansatz)
+A **parameterised circuit** is a circuit with adjustable "knobs": rotation angles. The fixed layout is called the **ansatz** (German for "approach"). The classical computer turns the knobs to make the output as good as possible, for example to find a molecule's lowest energy.
+Choosing the ansatz is an art: too simple and it cannot reach the answer; too big and it becomes noisy and hard to train.
+## Barren plateaus
+A **barren plateau** is a training problem found in 2018 (McClean and colleagues): for many large random-like circuits, the "slope" that tells you which way to turn the knobs becomes almost flat everywhere. Training then stalls.
+~ Like trying to find the lowest point of a huge, nearly flat desert in fog.
+Ways around it include smarter starting points, smaller or problem-shaped circuits, and local cost functions. Some researchers note that circuits without barren plateaus can often be simulated classically, which is an active debate.
+## Random circuit sampling and boson sampling
+These are tasks designed to show a quantum device can do something hard for normal computers, even if the task is not useful.
+**Random circuit sampling:** run a random circuit and collect output bitstrings. Google used it in 2019 (Sycamore, 53 qubits, about 200 seconds; Google estimated 10,000 years classically, which IBM disputed) and in 2024 (Willow). **Boson sampling** (proposed by Aaronson and Arkhipov in 2011) sends photons through a network of beam splitters; China's Jiuzhang experiments used it.
+Better classical algorithms have since narrowed some of these gaps, so claims keep being tested.
+
+## Quantum machine learning, step by step
+**Quantum machine learning (QML)** tries to use quantum circuits for learning from data. It is a young field with many open questions.
+**1. Data encoding (feature maps):** first, normal data must be loaded into qubits, for example by turning each number into a rotation angle. This step is called a **feature map** and can be slow for big data.
+**2. Quantum neural networks:** a parameterised circuit acts like a neural network. Its knobs are trained to give the right answers, using a hybrid loop.
+**3. Quantum kernels:** a feature map places data points as quantum states; the overlap between two states measures how "similar" they are. A classical method, like a **support vector machine**, then uses these similarities.
+**4. Quantum generative models:** circuits that learn to produce new samples like the training data, for example "quantum circuit Born machines", which use the measurement odds themselves as the model.
+x QML is not proven to beat classical AI on real data yet. Some claimed speed-ups were later matched by classical methods ("dequantization").
+
+## Simulating materials and many-body physics
+Many electrons interacting together (a **many-body** system) are very hard to simulate classically. Examples: high-temperature superconductors, magnets, and catalysts. A famous test case is the **Hubbard model**, a simple grid model of electrons hopping and repelling.
+Quantum computers may simulate such systems naturally, because they follow the same quantum rules. This is one of the most promising future uses.
+## Analog quantum simulators
+An **analog simulator** does not run gates. Instead, it is built to behave like the system you want to study. For example, cold atoms held in a grid of laser light (an "optical lattice") can mimic electrons in a crystal.
+Analog simulators already study physics with hundreds of atoms, but they are not general-purpose computers.
+! NISQ algorithms are hybrid: short quantum circuits plus a classical optimiser. Useful advantage on real problems is still being searched for.
+@ vqe
+? VQE uses... ;; Only a quantum computer ;; *A quantum computer plus a classical optimiser ;; Only error-corrected qubits ;; Grover search || It's a hybrid loop.
+? Zero-noise extrapolation is a form of... ;; Error correction ;; *Error mitigation ;; Teleportation ;; Encryption || It reduces noise effects without encoding.

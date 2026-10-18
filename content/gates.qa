@@ -1,0 +1,117 @@
+# gates | Quantum gates & circuits | 🔀
+> A gate is one step in a quantum program. It changes the state of one or more qubits. Gates on one qubit turn its arrow on the sphere. Gates on two qubits can link them together (this link is called entanglement).
+" I think I can safely say that nobody understands quantum mechanics. | Richard Feynman, The Character of Physical Law (1965)
+## Gates in plain words
+A **gate** is a simple action on qubits, like a button you press. Here are the most common ones:
+**X gate (NOT):** flips 0 to 1 and 1 to 0. Example: start with 0, apply X, you get 1.
+**H gate (Hadamard):** turns a plain 0 into an equal mix of 0 and 1. Measure it and you get 0 or 1, each half the time. This is how most quantum programs create superposition.
+**CNOT gate (controlled-NOT):** works on two qubits. If the first qubit (the "control") is 1, it flips the second qubit (the "target"). If the control is 0, it does nothing.
+A **circuit** is a list of gates in order, read from left to right, like a recipe.
+## Entanglement step by step
+**Entanglement** is a special link between qubits. Once two qubits are entangled, their results match each other, even if they are far apart.
+How to make it: 1) Start with two qubits, both 0. 2) Apply H to the first one. Now it is a 50/50 mix. 3) Apply CNOT, with the first qubit as control. 4) Now the pair is in a state called a **Bell state**: you will always measure either "00" or "11", never "01" or "10".
+Each single result is random, but the two results always agree.
+~ Imagine two magic coins. You flip them in different cities. Each one lands randomly, but they always land the same way.
+x Entanglement cannot be used to send messages faster than light. Each person alone just sees random results. The match only shows up when they compare notes later.
+## Pauli gates: X, Y, Z
+X is the quantum NOT: it swaps $|0\rangle$ and $|1\rangle$ (a 180° turn around the x-axis). Z flips the sign of $|1\rangle$ (a 180° turn around z). Y does both, with an extra factor of $i$.
+$$X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\ Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\ Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$$
+~ X is like flipping a pancake upside down. Z is like turning it 180° on the plate: it looks the same, but its "phase" side has changed.
+x Z does nothing because |0⟩ and |1⟩ stay the same. Z changes |+⟩ into |−⟩, which is a real change.
+On the Bloch sphere, each Pauli gate is a half-turn (180°) around its own axis. X swaps the north and south poles. Z leaves the poles alone but flips the sign of $|1\rangle$. Y does both, with an extra factor of $i$. Applying any Pauli twice gives back the original state.
+$$X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\ Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\ Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\ X^2=Y^2=Z^2=I$$
+## Pauli matrix algebra
+The Pauli matrices follow a neat multiplication table: $XY=iZ$, $YZ=iX$, $ZX=iY$. Any two different Paulis **anticommute**: $XZ=-ZX$. Together with $I$, they form a basis: every 2×2 matrix is a combination of $I,X,Y,Z$.
+This algebra is why errors can be tracked so easily in error correction: pushing a Pauli error through Clifford gates just turns it into another Pauli.
+$$XY=iZ,\quad YZ=iX,\quad ZX=iY,\qquad \{X,Z\}=XZ+ZX=0,\qquad HXH=Z$$
+~ Like the rules of rock-paper-scissors: a small, fixed table tells you the result of any combination.
+x Pauli matrices commute like normal numbers. $XZ=-ZX$: changing the order flips the sign.
+## Hadamard (H)
+H creates superposition: $|0\rangle\to|+\rangle$ and $|1\rangle\to|-\rangle$. Applying H twice gets you back where you started, which is the simplest example of interference.
+$$H=\tfrac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix},\quad |\pm\rangle=\tfrac{|0\rangle\pm|1\rangle}{\sqrt2}$$
+~ Like a fair coin toss machine: you put in a sure side and get a perfect 50/50. And if you toss twice in a quantum way, you get back the side you started with!
+x H makes the qubit random. It makes a definite superposition; a second H undoes it exactly, which no random process can do.
+H swaps the Z basis and the X basis: it sends $|0\rangle\to|+\rangle$ and $|+\rangle\to|0\rangle$. Applied to $n$ qubits at once, it creates an equal superposition of all $2^n$ bit strings. Almost every quantum algorithm starts this way.
+$$H^{\otimes n}|0\rangle^{\otimes n}=\frac{1}{\sqrt{2^n}}\sum_{x}|x\rangle$$
+## Phase gates: S and T
+S adds a phase of $i$ (90°) to $|1\rangle$, and T adds $e^{i\pi/4}$ (45°). They don't change probabilities right away, but they change how later gates interfere. $T^2=S$ and $S^2=Z$.
+$$S=\begin{pmatrix}1&0\\0&i\end{pmatrix},\quad T=\begin{pmatrix}1&0\\0&e^{i\pi/4}\end{pmatrix}$$
+~ Like turning the hand of a clock by a quarter (S) or an eighth (T) turn.
+x phase gates are useless because probabilities stay the same. Without T, quantum computers would not be universal.
+They are turns around the Z axis: S is a quarter-turn (90°) and T is an eighth-turn (45°). So $T^2=S$ and $S^2=Z$. T is special: together with H and CNOT it makes a universal gate set, but T is also the hardest gate to protect with error correction.
+$$S=\begin{pmatrix}1&0\\0&i\end{pmatrix},\quad T=\begin{pmatrix}1&0\\0&e^{i\pi/4}\end{pmatrix},\quad T^2=S,\ S^2=Z$$
+## Rotation gates
+$R_x(\theta), R_y(\theta), R_z(\theta)$ rotate the Bloch sphere by any angle around an axis. Any single-qubit gate can be built from these rotations. They are the "knobs" in variational algorithms.
+$$R_y(\theta)=\begin{pmatrix}\cos\frac\theta2&-\sin\frac\theta2\\ \sin\frac\theta2&\cos\frac\theta2\end{pmatrix}$$
+~ Like volume knobs: you can turn by any amount, not just fixed clicks.
+x only a few fixed gates exist. Real hardware supports smooth rotations by any angle.
+Rotation gates take an angle as input, so you can turn the Bloch arrow by any amount. In variational algorithms (like VQE and QAOA), these angles are the "knobs" that a classical optimiser tunes. Any single-qubit gate can be built from rotations around just two axes.
+$$R_y(\theta)=\begin{pmatrix}\cos\frac\theta2&-\sin\frac\theta2\\ \sin\frac\theta2&\cos\frac\theta2\end{pmatrix},\qquad R_z(\varphi)=\begin{pmatrix}e^{-i\varphi/2}&0\\0&e^{i\varphi/2}\end{pmatrix}$$
+## Any single-qubit gate from rotations
+Every single-qubit gate is a rotation of the Bloch sphere, up to a global phase. A handy recipe: any gate can be built as a Z-rotation, then a Y-rotation, then another Z-rotation (the "ZYZ decomposition"). Compilers use rules like this to turn your gates into the hardware's native gates.
+$$U=e^{i\alpha}R_z(\beta)\,R_y(\gamma)\,R_z(\delta),\qquad R_{\hat n}(\theta)=e^{-i\theta(\hat n\cdot\vec\sigma)/2}$$
+~ Any way of turning a globe can be done in three simple moves: spin it, tilt it, spin it again.
+x you need a special gate for every possible rotation. Three rotations around two fixed axes are enough for all of them.
+## CNOT and CZ
+CNOT has a control and a target: if the control is $|1\rangle$, it flips the target. H then CNOT turns $|00\rangle$ into a Bell state. CZ adds a minus sign only to $|11\rangle$; it is symmetric between the two qubits.
+~ CNOT is like a light switch controlled by another switch: "flip the target only if the control is on".
+x the control qubit is never changed by CNOT. In the X basis, the roles swap and the "target" can change the "control" (phase kickback).
+CNOT flips the target qubit only when the control is 1. CZ adds a minus sign only when both qubits are 1. They are closely related: CNOT = (H on target) · CZ · (H on target). Since CZ treats both qubits the same way, it doesn't matter which one you call the control.
+$$\mathrm{CNOT}|a,b\rangle=|a,\,a\oplus b\rangle,\qquad \mathrm{CZ}|a,b\rangle=(-1)^{ab}|a,b\rangle$$
+## SWAP, Toffoli and Fredkin
+SWAP exchanges two qubits (it can be built from 3 CNOTs). Toffoli (CCNOT) flips a target only if both controls are 1; it can compute AND reversibly. Fredkin (controlled-SWAP) swaps two qubits if the control is 1.
+~ SWAP is like two people changing seats. Toffoli is like a lock that opens only if both keys are turned.
+x SWAP is free. On real chips it costs 3 CNOTs, which adds errors.
+SWAP is useful on real chips where qubits can only talk to their neighbours: to bring two far-away qubits together, you swap them closer step by step. Each SWAP costs three CNOTs, so a good layout of qubits saves many gates.
+$$\mathrm{SWAP}=\mathrm{CNOT}_{12}\,\mathrm{CNOT}_{21}\,\mathrm{CNOT}_{12},\qquad \mathrm{Toffoli}|a,b,c\rangle=|a,b,c\oplus ab\rangle$$
+## Universal gate sets
+A gate set is universal if it can approximate any quantum operation as closely as you like. A common one is {H, T, CNOT}. Clifford gates (H, S, CNOT) alone are not enough; the T gate adds the missing "magic".
+~ Like LEGO: with just a few brick types you can build anything, if you have enough bricks.
+x universal means exact. Universal sets approximate any gate as closely as you want, using enough gates.
+"Universal" means any quantum computation can be approximated as closely as you want. The Solovay–Kitaev theorem says this approximation is efficient: the number of gates grows only slowly as you ask for more accuracy. Real hardware has its own native gates; the compiler translates everything into them.
+k Common universal set: {H, T, CNOT}.
+k Clifford gates (H, S, CNOT) alone are NOT universal and can be simulated efficiently on a normal computer (Gottesman–Knill theorem).
+## Clifford+T and the Solovay–Kitaev theorem
+**Clifford gates** (H, S, CNOT) map Paulis to Paulis. They are easy to protect with error correction, but a computer with only Cliffords can be simulated quickly on a normal computer (Gottesman–Knill). Adding the **T gate** makes the set universal.
+The **Solovay–Kitaev theorem** says any single-qubit gate can be approximated to accuracy ε using only about $\log^c(1/\varepsilon)$ gates from a universal set. So a small, fixed gate set loses very little efficiency. In fault-tolerant machines, the number of T gates ("T-count") is usually the main cost.
+$$\text{Clifford}+T=\{H,S,\mathrm{CNOT},T\},\qquad N_{\text{gates}}=O\!\left(\log^{c}(1/\varepsilon)\right),\ c\approx 2\text{–}4$$
+~ Like LEGO: a few brick shapes are enough to build anything, and you don't need a special brick for each model.
+x Clifford gates alone give quantum speedups. They can create entanglement, but circuits made only of them are classically easy to simulate.
+## The circuit model
+A circuit is drawn with one horizontal wire per qubit and time flowing left to right. Boxes on wires are gates, vertical lines connect multi-qubit gates, and a meter symbol means measurement. The number of time steps is called the depth.
+~ Like sheet music: each line is an instrument (a qubit), and you read left to right in time.
+x wires are real wires. A "wire" just means a qubit over time; it usually stays in one place on the chip.
+A circuit is read from left to right. Each horizontal line is one qubit; boxes are gates; a meter symbol is a measurement. Two numbers describe a circuit's cost: its width (how many qubits) and its depth (how many time steps). On noisy hardware, depth matters a lot, because errors pile up with every step.
+k Width = number of qubits; depth = number of gate layers.
+k Gates on different qubits in the same layer can run at the same time.
+## Measurement in different bases
+Hardware usually measures in the Z basis ($|0\rangle/|1\rangle$). To measure in the X basis ($|+\rangle/|-\rangle$), apply H first, then measure. For the Y basis, apply $S^\dagger$ then H.
+~ Like checking a box from the top or from the side. You get different information depending on which way you look.
+x you can measure in any basis directly on hardware. Most chips only measure 0/1, so you rotate first.
+Measuring in the X basis asks "is it $|+\rangle$ or $|-\rangle$?". In practice you apply H and then measure normally. For the Y basis, apply $S^\dagger$ then H. The same qubit can give a certain answer in one basis and a totally random answer in another.
+$$P(+)=|\langle +|\psi\rangle|^2,\qquad \text{X-measurement} = H \text{ then Z-measurement}$$
+## Quantum parallelism and interference
+A gate acting on a superposition acts on all its parts at once. But measuring gives only one random result, so parallelism alone is not useful. Algorithms arrange interference so wrong answers cancel out and right answers add up.
+~ Noise-cancelling headphones play an "opposite" sound wave so the noise cancels out. Algorithms make wrong answers cancel in the same way.
+x quantum computers try all answers and pick the best. You can't just read all answers; you only get one random result unless interference helps.
+Parallelism alone is not enough: if you just measure a big superposition, you get one random answer. The art is to make the wrong answers' amplitudes cancel (destructive interference) and the right answers' amplitudes add up (constructive interference) before you measure.
+$$H\,R_z(\varphi)\,H|0\rangle \Rightarrow P(0)=\cos^2(\varphi/2)$$
+## Phase kickback
+When a controlled gate acts on a target that is an eigenstate, the target doesn't change. Instead, the eigenvalue's phase "kicks back" onto the control qubit. This trick turns hidden information (a phase) into something interference can reveal.
+Phase kickback is the engine of Deutsch–Jozsa, Bernstein–Vazirani, phase estimation and Shor's algorithm. Try the "phase kickback" preset in the circuit builder.
+$$\text{C-}U\,(\alpha\ket{0}+\beta\ket{1})\ket{u}=(\alpha\ket{0}+\beta e^{i\theta}\ket{1})\ket{u}\quad\text{if } U\ket{u}=e^{i\theta}\ket{u}$$
+$$\mathrm{CNOT}\,\ket{+}\ket{-}=\ket{-}\ket{-}$$
+~ Like pushing off a wall on ice skates: the wall doesn't move, but you do.
+x the control qubit is never changed by a controlled gate. In the right basis, the control can change while the target stays the same.
+## GHZ and W states: entangling three qubits
+With three qubits there are two very different kinds of entanglement.
+**GHZ state:** (|000⟩ + |111⟩)/√2. All three agree. If you measure one, the other two become definite. Losing one qubit destroys the entanglement of the rest. Make it with H, then two CNOTs (try the GHZ preset in the 3-qubit builder).
+**W state:** (|001⟩ + |010⟩ + |100⟩)/√3. Exactly one qubit is 1. If one qubit is lost, the other two stay partly entangled. W states are more robust.
+! Gates rotate states; entangling gates (like CNOT) link qubits; interference is the engine that makes quantum algorithms work.
+@ gates
+@ interf
+@ circuit
+? What does the concurrence of $(|00\rangle+|11\rangle)/\sqrt2$ equal? ;; 0 ;; 0.5 ;; *1 ;; 2 || A Bell state is maximally entangled, so the concurrence is 1.
+? What is $HH|0\rangle$? ;; |1⟩ ;; |+⟩ ;; *|0⟩ ;; |−⟩ || $H^2=I$, the two paths to $|1\rangle$ cancel.
+? Which gate set is universal? ;; {H, S} ;; {H, S, CNOT} ;; *{H, T, CNOT} ;; {X, Z} || Clifford gates need T to become universal.
+? Which gate flips the target only when BOTH controls are 1? ;; CNOT ;; SWAP ;; *Toffoli ;; CZ || Toffoli = controlled-controlled-NOT.

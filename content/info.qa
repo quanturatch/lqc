@@ -1,0 +1,81 @@
+# info | Quantum information | 📡
+> This chapter is about information: how qubits store it, send it, and lose it.
+" What we observe is not nature herself, but nature exposed to our method of questioning. | Werner Heisenberg, Physics and Philosophy (1958)
+## Quantum teleportation
+Alice can send an unknown qubit state to Bob using one shared Bell pair plus 2 classical bits. She does a Bell measurement on her qubit and her half of the pair, phones Bob the 2 bits, and Bob applies X and/or Z to fix his qubit. Nothing travels faster than light, and the original is destroyed (no cloning!).
+~ Like sending flat-pack furniture instructions: the original is taken apart, and the receiver rebuilds the exact same piece using a kit they already have (the Bell pair).
+x teleportation moves matter or is instant. Only the state moves, and Bob must wait for Alice's normal message.
+Teleportation moves a state, not matter, and it cannot beat the speed of light: Bob must wait for Alice's 2 classical bits. Alice's original is destroyed in the process, so no-cloning is respected. Teleportation is used inside quantum networks and in some designs of quantum computers to move qubits between chips.
+k Resources: 1 Bell pair + 2 classical bits → 1 qubit moved.
+k Bob's fix-up: apply $X^{m_2}$ then $Z^{m_1}$, using Alice's measured bits.
+## Superdense coding
+The reverse trick: with a shared Bell pair, Alice can send 2 classical bits by sending just 1 qubit. She applies I, X, Z or XZ to her half depending on the 2 bits, then sends it to Bob, who does a Bell measurement.
+~ Like a pre-shared codebook: because you prepared something earlier, one delivery can carry double the information.
+x you get 2 bits for free. You still need to share the Bell pair beforehand.
+Superdense coding is teleportation run backwards. Teleportation uses 1 Bell pair + 2 bits to send 1 qubit. Superdense coding uses 1 Bell pair + 1 qubit to send 2 bits. Both show that entanglement is a real resource that can be "spent".
+k Resources: 1 Bell pair + 1 qubit sent → 2 classical bits.
+k Alice's encoding: 00 → I, 01 → X, 10 → Z, 11 → ZX.
+## Entanglement measures
+How entangled is a state? For a pure two-part state, the entanglement entropy (the entropy of one part on its own) answers it. Bell states are maximally entangled (1 "ebit"); product states have zero. Concurrence and negativity are other measures.
+~ Like measuring how strongly two people's moods are linked: not at all, a bit, or fully.
+x any correlation means entanglement. Classical correlations exist too; entanglement is a stronger, quantum kind.
+For a pure state of two parts A and B, the standard measure is the entropy of A's reduced state. For two qubits it ranges from 0 (product state) to 1 (Bell state). For mixed states, measuring entanglement is much harder, and many different measures exist.
+$$E(\psi)=S(\rho_A),\quad \rho_A=\mathrm{Tr}_B|\psi\rangle\langle\psi|,\qquad C=2|\alpha_{00}\alpha_{11}-\alpha_{01}\alpha_{10}|$$
+## Bell's theorem and the CHSH game
+In 1964, John Bell asked: could each particle carry a hidden "instruction list" that decides its results in advance? He showed that any such local hidden plan must obey a limit. Quantum mechanics breaks that limit. The CHSH game is the cleanest version. A referee gives Alice and Bob random bits, and they must answer without talking. Any classical strategy wins at most 75% of the time. With a shared Bell pair, they win about 85.4%.
+Experiments since the 1970s, and very careful "loophole-free" ones in 2015, agree with quantum mechanics. This does not allow faster-than-light messages: each person's own results still look completely random. It only shows that nature's correlations are stronger than any classical plan.
+$$S=E(a,b)+E(a,b')+E(a',b)-E(a',b'),\qquad |S|_{\text{classical}}\le 2,\quad |S|_{\text{quantum}}\le 2\sqrt2$$
+$$P_{\text{win}}^{\text{classical}}\le \tfrac34,\qquad P_{\text{win}}^{\text{quantum}}=\cos^2\tfrac{\pi}{8}\approx 0.854$$
+~ Two friends answer quiz questions in separate rooms. With any plan they agreed on beforehand, they can't beat 75%. With a shared entangled "magic coin" they can, yet neither can send a message to the other.
+x Bell's theorem proves faster-than-light signalling. It doesn't. It rules out local hidden plans, but no information travels between Alice and Bob.
+## Von Neumann entropy
+The quantum version of Shannon entropy. It is 0 for pure states and largest for the fully mixed state ($\log_2 d$). It measures how much "missing information" a state has.
+$$S(\rho)=-\mathrm{Tr}(\rho\log_2\rho)=-\sum_i\lambda_i\log_2\lambda_i$$
+~ Entropy is "how surprised you'll be". A sure state has zero surprise; a totally random state has the most.
+x entropy is always about heat. Here it means missing information.
+It is the quantum version of Shannon entropy, the measure of "surprise" in a random source. A pure state has entropy 0: nothing is uncertain. One qubit can have at most 1 bit of entropy, reached by the fully mixed state $I/2$.
+## Quantum channels and noise
+A channel is any physical process acting on a state, including noise. Channels are written with Kraus operators. Examples: the bit-flip channel, the depolarising channel, and amplitude damping (energy loss).
+$$\mathcal{E}(\rho)=\sum_k K_k\rho K_k^\dagger,\qquad \sum_k K_k^\dagger K_k=I$$
+~ Like a phone line that adds crackle. The channel describes what the line does to your voice (your state).
+x noise only flips bits. It can also blur phases and drain energy.
+A channel is any physical process that can happen to a state, including noise. Mathematically, it is written with "Kraus operators". For example, the bit-flip channel applies X with probability $p$ and does nothing otherwise. Every real gate is a little bit of a noisy channel.
+## Fidelity
+Fidelity measures how close two states are, from 0 (completely different) to 1 (identical). For pure states it's the squared overlap. It's the standard way to judge how well a gate or a teleportation worked.
+$$F(|\psi\rangle,|\phi\rangle)=|\langle\psi|\phi\rangle|^2$$
+~ Like a similarity score between two photos: 100% means identical.
+x 99% fidelity is "basically perfect". After many steps, small errors add up quickly.
+A fidelity of 1 means the states are identical; 0 means they are perfectly distinguishable. Hardware makers report gate fidelities like 99.9%, meaning the real gate is very close to the ideal one. But small errors multiply: 1000 gates at 99.9% each give roughly $0.999^{1000}\approx 37\%$ overall.
+$$F_{\text{total}}\approx F_{\text{gate}}^{\,N}$$
+## Trace distance
+Trace distance $D(\rho,\sigma)$ tells you how well you could tell two states apart with the best possible measurement. 0 means identical; 1 means perfectly distinguishable.
+$$D(\rho,\sigma)=\tfrac12\mathrm{Tr}|\rho-\sigma|$$
+~ How well could the best detective tell two suspects apart? That's trace distance.
+x two states with the same probabilities are the same. They can differ in phase, and trace distance sees that.
+Trace distance has a clear meaning: if someone gives you one of two states at random, the best possible chance of guessing which one is $\tfrac12(1+D)$. So $D=0$ means guessing is pure luck, and $D=1$ means you can always tell.
+$$P_{\text{guess}}=\tfrac12\left(1+D(\rho,\sigma)\right)$$
+## The no-cloning rule
+**No-cloning theorem:** there is no machine that can make a perfect copy of an unknown quantum state. This was proved in 1982 (Wootters and Zurek, and Dieks).
+Why? Copying would let you measure many copies and learn the exact state, including its phase. That would break the rules of measurement. The maths also shows it directly: gates are linear, and a linear machine that copies |0⟩ and |1⟩ correctly gives the wrong answer for a mix like (|0⟩ + |1⟩)/√2.
+What it means in practice: you cannot back up a qubit by copying it, so error correction has to spread information over many qubits instead. It also helps keep quantum key distribution safe: a spy cannot copy the photons and pass the originals on unchanged.
+~ You can photocopy a letter, but you cannot photocopy a soap bubble's exact shape without touching (and changing) it.
+x Teleportation does not clone. The original state is destroyed when it is "sent".
+## The EPR paradox
+In **1935**, Einstein, Podolsky and Rosen argued that quantum mechanics must be incomplete. With an entangled pair, measuring one particle seems to fix the other's result instantly, far away. They thought hidden "instructions" must be carried by each particle.
+In **1964** John Bell found a test, and experiments (including the loophole-free tests of 2015 and the 2022 Nobel Prize) showed no local hidden instructions can explain the results. Nature really is this strange, though it still cannot send messages faster than light.
+## Quantum channels and noise
+A **quantum channel** describes what happens to a state on its way somewhere, including noise. Common types:
+**Bit flip:** 0 and 1 swap by accident. **Phase flip:** the sign between |0⟩ and |1⟩ flips. **Depolarising:** with some chance the state is replaced by pure randomness. **Amplitude damping:** |1⟩ slowly decays to |0⟩, as a qubit loses energy (this is what T1 measures).
+Knowing the channel helps design the right error correction.
+## The Holevo bound: how much can a qubit carry?
+Although a qubit has infinitely many possible states, the **Holevo bound** (1973) says you can read out at most **1 classical bit** per qubit sent (without entanglement).
+With pre-shared entanglement, **superdense coding** doubles this to 2 bits per qubit sent. So qubits are not magic hard drives; their power is in processing, not storage.
+! Entanglement is a resource: spend one Bell pair and 2 classical bits to teleport a qubit, or one Bell pair and 1 qubit to send 2 bits.
+@ teleport
+@ superdense
+@ spooky
+@ chsh
+? In the CHSH game, the best possible winning chance is... ;; 75% for both classical and quantum ;; *75% classical, about 85.4% quantum ;; 100% quantum ;; 50% quantum || Quantum players reach $\cos^2(\pi/8)\approx 85.4\%$, Tsirelson's bound.
+? Superdense coding sends how many classical bits per qubit sent? ;; 1 ;; *2 ;; 4 ;; Infinite || With a pre-shared Bell pair, one qubit carries 2 bits.
+? Teleporting one qubit needs a Bell pair plus how many classical bits? ;; 0 ;; 1 ;; *2 ;; Infinitely many || Two bits tell Bob which of 4 corrections to apply.
+? Von Neumann entropy of a pure state is... ;; *0 ;; 1 ;; log 2 ;; Undefined || Pure states have no missing information.
